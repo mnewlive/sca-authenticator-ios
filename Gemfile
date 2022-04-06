@@ -24,7 +24,6 @@ source "http://rubygems.org"
 gem 'fourflusher'
 gem 'xcpretty'
 gem 'activesupport', '~> 5.0'
-gem 'fourflusher'
 
 gem 'rake'
 gem 'pry', :group => [:development, :test]
