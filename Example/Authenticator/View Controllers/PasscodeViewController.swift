@@ -23,7 +23,7 @@
 import UIKit
 
 private struct Layout {
-    static let logoImageViewSize: CGSize = CGSize(width: 72.0, height: 72.0)
+    static let logoImageViewSize: CGSize = CGSize(width: 150.0, height: 98.0)
     static let logoImageViewTopOffset: CGFloat = AppLayout.screenHeight * 0.14
     static let passcodeViewTopToLogoOffset: CGFloat = AppLayout.screenHeight * 0.08
     static let passcodeViewTopToViewOffset: CGFloat = AppLayout.screenHeight * 0.16

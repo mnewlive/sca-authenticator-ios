@@ -132,6 +132,7 @@ private extension PasscodeKeyboard {
             actionButton.setImage(actionButtonImage, for: .normal)
             actionButton.setImage(actionButtonImage, for: .highlighted)
             actionButton.addTarget(self, action: #selector(actionButtonPressed(_:)), for: .touchUpInside)
+            actionButton.tintColor = .lightBlue
             button = actionButton
         }
         return button

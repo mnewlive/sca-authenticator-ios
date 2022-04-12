@@ -35,6 +35,7 @@ final class SettingsCell: UITableViewCell, Dequeuable {
 
     func set(with item: SettingCellModel) {
         imageView?.image = item.icon
+        imageView?.tintColor = .lightBlue
         textLabel?.text = item.localizedLabel
         if let detailsText = item.detailString {
             detailTextLabel?.text = detailsText

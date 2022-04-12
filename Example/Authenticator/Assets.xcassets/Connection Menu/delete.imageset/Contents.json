@@ -3,16 +3,6 @@
     {
       "filename" : "delete_light.pdf",
       "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "delete_dark.pdf",
-      "idiom" : "universal"
     }
   ],
   "info" : {
