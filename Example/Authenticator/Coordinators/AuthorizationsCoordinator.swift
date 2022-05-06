@@ -76,6 +76,7 @@ extension AuthorizationsCoordinator: AuthorizationsViewControllerDelegate {
 
     func showMoreOptionsMenu() {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.view.tintColor = UIColor.primary
 
         let cancel = UIAlertAction(title: l10n(.cancel), style: .cancel)
         let connections = UIAlertAction(title: l10n(.viewConnections), style: .default) { [weak self] _ in
