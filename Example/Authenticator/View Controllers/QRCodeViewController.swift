@@ -132,7 +132,7 @@ final class QRCodeViewController: BaseViewController {
     private func setupCancelButton() {
         let cancelButton = UIButton()
         cancelButton.setTitle(l10n(.cancel), for: .normal)
-        cancelButton.setTitleColor(.lightBlue, for: .normal)
+        cancelButton.setTitleColor(.primary, for: .normal)
         cancelButton.addTarget(self, action: #selector(cancelPressed), for: .touchUpInside)
 
         view.addSubview(cancelButton)

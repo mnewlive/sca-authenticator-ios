@@ -39,12 +39,8 @@ extension UIColor {
         return UIColor(named: "background", in: .authenticator_main, compatibleWith: nil)!
     }
 
-    static var lightBlue: UIColor {
-        return UIColor(named: "lightBlue", in: .authenticator_main, compatibleWith: nil)!
-    }
-
-    static var darkBlue: UIColor {
-        return UIColor(named: "darkBlue", in: .authenticator_main, compatibleWith: nil)!
+    static var primary: UIColor {
+        return UIColor(named: "primary", in: .authenticator_main, compatibleWith: nil)!
     }
 
     static var lightGray: UIColor {

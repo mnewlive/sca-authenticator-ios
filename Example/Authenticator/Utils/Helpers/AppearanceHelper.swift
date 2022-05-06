@@ -38,7 +38,7 @@ struct AppearanceHelper {
         navBarAppearance.barStyle = .default
         navBarAppearance.backgroundColor = .backgroundColor
         navBarAppearance.barTintColor = .backgroundColor
-        navBarAppearance.tintColor = .lightBlue
+        navBarAppearance.tintColor = .primary
         navBarAppearance.isTranslucent = false
         navBarAppearance.shadowImage = UIImage()
         navBarAppearance.prefersLargeTitles = true

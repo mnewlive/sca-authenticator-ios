@@ -29,7 +29,7 @@ final class TimeLeftLabel: UILabel {
 
     init() {
         super.init(frame: .zero)
-        textColor = .lightBlue
+        textColor = .primary
         font = .boldSystemFont(ofSize: 14.0)
     }
 

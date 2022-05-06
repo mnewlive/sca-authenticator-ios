@@ -87,7 +87,7 @@ final class ConnectionCell: UITableViewCell, Dequeuable {
         didSet {
             if picked {
                 cardView.layer.borderWidth = 2.0
-                cardView.layer.borderColor = UIColor.lightBlue.cgColor
+                cardView.layer.borderColor = UIColor.primary.cgColor
             } else {
                 cardView.layer.borderWidth = 0.0
                 cardView.layer.borderColor = nil

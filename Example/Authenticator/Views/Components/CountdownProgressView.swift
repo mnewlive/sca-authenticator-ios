@@ -30,7 +30,7 @@ final class CountdownProgressView: UIView {
 
     init() {
         super.init(frame: .zero)
-        progressView.progressTintColor = .lightBlue
+        progressView.progressTintColor = .primary
         progressView.trackTintColor = .clear
         layout()
     }
