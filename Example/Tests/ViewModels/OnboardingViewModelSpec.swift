@@ -180,7 +180,7 @@ final class OnboardingViewModelSpec: BaseSpec {
 
             context("titleColor") {
                 it("should return correct color with given name") {
-                    expect(viewModel.titleColor).to(equal(UIColor.(equal(UIColor.primary))))
+                    expect(viewModel.titleColor).to(equal(UIColor.primary))
                 }
             }
 
