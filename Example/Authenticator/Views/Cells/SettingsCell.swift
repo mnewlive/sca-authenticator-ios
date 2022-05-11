@@ -26,11 +26,18 @@ final class SettingsCell: UITableViewCell, Dequeuable {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
         backgroundColor = .backgroundColor
+        selectedBackgroundView = setSelectedBackgroundView()
         textLabel?.textColor = .titleColor
         textLabel?.font = .auth_17regular
         detailTextLabel?.textColor = .titleColor
         detailTextLabel?.font = .auth_13regular
         contentView.tintColor = .extraLightGray
+    }
+    
+    func setSelectedBackgroundView() -> UIView {
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = .selectedColor
+        return bgColorView
     }
 
     func set(with item: SettingCellModel) {
