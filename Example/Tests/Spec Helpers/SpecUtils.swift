@@ -48,17 +48,11 @@ struct SpecUtils {
     }
 
     static func createAuthResponse(with authMessage: [String: Any], id: ID, guid: GUID) -> SEAuthorizationData {
-        let encryptedData = try! SECryptoHelper.encrypt(authMessage.jsonString!, tag: SETagHelper.create(for: guid))
+        let encryptedMessage = try! SECryptoHelper.encrypt(authMessage.jsonString!, tag: SETagHelper.create(for: guid))
 
-        let dict = [
-            "data": encryptedData.data,
-            "key": encryptedData.key,
-            "iv": encryptedData.iv,
-            "connection_id": id,
-            "algorithm": "AES-256-CBC"
-        ]
+        let encryptedData = SEEncryptedData(data: encryptedMessage.data, key: encryptedMessage.key, iv: encryptedMessage.iv, connectionId: id)
 
-        return SEEncryptedData(dict)!.decryptedAuthorizationData!
+        return encryptedData.decryptedAuthorizationData!
     }
 
     static func createAuthResponseV2(
@@ -137,5 +131,50 @@ private extension JSONDecoder {
                 throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot decode date string \(dateString)")
             }
         }
+    }
+
+    static func createAuthResponseV2(
+        with authMessage: [String: Any],
+        authorizationId: Int,
+        connectionId: Int,
+        guid: GUID,
+        status: String = "pending"
+    ) -> SEAuthorizationDataV2 {
+        let encryptedData = try! SECryptoHelper.encrypt(authMessage.jsonString!, tag: SETagHelper.create(for: guid))
+
+        let dict: [String: Any] = [
+            "data": encryptedData.data,
+            "key": encryptedData.key,
+            "iv": encryptedData.iv,
+            "id": authorizationId,
+            "connection_id": connectionId,
+            "status": status
+        ]
+
+        let response = SpecDecodableModel<SEEncryptedAuthorizationData>.create(from: dict)!
+        return response.decryptedAuthorizationDataV2!
+    }
+
+    static func createNotEncryptedAuthResponseV2(
+        with authMessage: [String: Any],
+        authorizationId: Int,
+        connectionId: Int,
+        guid: GUID,
+        status: AuthorizationStatus
+    ) -> SEAuthorizationDataV2 {
+        return SEAuthorizationDataV2(id: "\(authorizationId)", connectionId: "\(connectionId)", status: status)
+    }
+
+    
+    public static var publicKeyPem: String {
+        "-----BEGIN PUBLIC KEY-----\n" +
+        "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAppVU/nZZVewUCRVLz51X\n" +
+        "iKcliziIOb5/ReqHH82ikgC517/7Qo/cBFK+/iOC+yDgULkJE3SMhG85JoCqeX7j\n" +
+        "YzeILe5LLgqAxLCOjQFnkQDaHwP2WShU8WQifZ58UY5Th2GCKScFrsLxPr8HLWJH\n" +
+        "cPC6qicuOmgvyT64SvWFh8l5nHWcx/RA7e5Z4eCRntqyVDv622/vYybNInFMvqB+\n" +
+        "oEGOhEyh/qCYmIumEH3QH91eqCd05/Z9PtugH08TqRPDL6s5GunfTsBHYhJdxDTc\n" +
+        "qh0etk+TnUqYON7jOXDAN7L8y5VI/UELVONBJy8MzcyER1pyPhrnCDMaKX6+LcpB\n" +
+        "owIDAQAB\n" +
+        "-----END PUBLIC KEY-----\n"
     }
 }

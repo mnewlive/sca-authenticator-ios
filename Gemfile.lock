@@ -68,7 +68,10 @@ GEM
       rouge (~> 2.0.7)
 
 PLATFORMS
+  -darwin-21
   ruby
+  universal-darwin-20
+  x86_64-darwin-19
 
 DEPENDENCIES
   activesupport (~> 5.0)
