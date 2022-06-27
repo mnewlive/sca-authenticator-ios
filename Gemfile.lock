@@ -30,22 +30,10 @@ GEM
     minitest (5.15.0)
     nanaimo (0.3.0)
     netrc (0.11.0)
-<<<<<<< HEAD
     nokogiri (1.13.3)
       mini_portile2 (~> 2.8.0)
-=======
-<<<<<<< HEAD
-    nokogiri (1.13.3)
-      mini_portile2 (~> 2.8.0)
-=======
-    nokogiri (1.11.3)
-      mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     nokogiri (1.11.3-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.11.3-x86_64-darwin)
->>>>>>> 2f912221b8268063e97566234856c58a604f743d
->>>>>>> e46e2da2157d86176830def0204b9d05e81ffd66
       racc (~> 1.4)
     pry (0.14.1)
       coderay (~> 1.1)
@@ -82,20 +70,11 @@ GEM
       rouge (~> 2.0.7)
 
 PLATFORMS
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
   ruby
-=======
->>>>>>> e46e2da2157d86176830def0204b9d05e81ffd66
   -darwin-21
   ruby
   universal-darwin-20
   x86_64-darwin-19
-<<<<<<< HEAD
-=======
->>>>>>> 2f912221b8268063e97566234856c58a604f743d
->>>>>>> e46e2da2157d86176830def0204b9d05e81ffd66
 
 DEPENDENCIES
   activesupport (~> 5.0)
