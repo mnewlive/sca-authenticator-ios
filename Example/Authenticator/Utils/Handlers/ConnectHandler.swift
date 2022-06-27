@@ -98,7 +98,7 @@ private extension ConnectHandler {
         )
     }
 
-    func createNewConnection(
+    private func createNewConnection(
         from configurationUrl: URL,
         with connectQuery: String?,
         interactor: BaseConnectionsInteractor
