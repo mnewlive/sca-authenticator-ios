@@ -8,6 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		0479C5522387F8C300F3FE0A /* AVCaptureHelperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0479C5512387F8C300F3FE0A /* AVCaptureHelperSpec.swift */; };
+		511A0EB2288836C40035A485 /* Gilroy-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EA9288836C40035A485 /* Gilroy-Medium.otf */; };
+		511A0EB3288836C40035A485 /* Gilroy-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EA9288836C40035A485 /* Gilroy-Medium.otf */; };
+		511A0EB4288836C40035A485 /* Adelle regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EAA288836C40035A485 /* Adelle regular.otf */; };
+		511A0EB5288836C40035A485 /* Adelle regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EAA288836C40035A485 /* Adelle regular.otf */; };
+		511A0EB6288836C40035A485 /* Gilroy-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EAB288836C40035A485 /* Gilroy-Bold.ttf */; };
+		511A0EB7288836C40035A485 /* Gilroy-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EAB288836C40035A485 /* Gilroy-Bold.ttf */; };
+		511A0EB8288836C40035A485 /* Adelle semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EAC288836C40035A485 /* Adelle semibold.otf */; };
+		511A0EB9288836C40035A485 /* Adelle semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EAC288836C40035A485 /* Adelle semibold.otf */; };
+		511A0EBA288836C40035A485 /* Gilroy-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EAD288836C40035A485 /* Gilroy-Bold.otf */; };
+		511A0EBB288836C40035A485 /* Gilroy-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EAD288836C40035A485 /* Gilroy-Bold.otf */; };
+		511A0EBC288836C40035A485 /* Gilroy-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EAE288836C40035A485 /* Gilroy-Semibold.otf */; };
+		511A0EBD288836C40035A485 /* Gilroy-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EAE288836C40035A485 /* Gilroy-Semibold.otf */; };
+		511A0EBE288836C40035A485 /* Adelle italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EAF288836C40035A485 /* Adelle italic.otf */; };
+		511A0EBF288836C40035A485 /* Adelle italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EAF288836C40035A485 /* Adelle italic.otf */; };
+		511A0EC0288836C50035A485 /* Adelle bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EB0288836C40035A485 /* Adelle bold.otf */; };
+		511A0EC1288836C50035A485 /* Adelle bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EB0288836C40035A485 /* Adelle bold.otf */; };
+		511A0EC2288836C50035A485 /* Adelle_Reg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EB1288836C40035A485 /* Adelle_Reg.otf */; };
+		511A0EC3288836C50035A485 /* Adelle_Reg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EB1288836C40035A485 /* Adelle_Reg.otf */; };
 		5DF91D13283516B300B80A9B /* SECryptoHelperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF91D12283516B300B80A9B /* SECryptoHelperSpec.swift */; };
 		6CF5A0163F3E926E5B271FBE /* Pods_Authenticator_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC7966F04DE3EFEB4C47030C /* Pods_Authenticator_Tests.framework */; };
 		8432878826CE378400F77DD5 /* AuthorizationStatusSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432878726CE378400F77DD5 /* AuthorizationStatusSpec.swift */; };
@@ -397,6 +415,15 @@
 /* Begin PBXFileReference section */
 		0479C5512387F8C300F3FE0A /* AVCaptureHelperSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVCaptureHelperSpec.swift; sourceTree = "<group>"; };
 		1249D71A41FFB9C79FF0AE5E /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		511A0EA9288836C40035A485 /* Gilroy-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Medium.otf"; sourceTree = "<group>"; };
+		511A0EAA288836C40035A485 /* Adelle regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Adelle regular.otf"; sourceTree = "<group>"; };
+		511A0EAB288836C40035A485 /* Gilroy-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Bold.ttf"; sourceTree = "<group>"; };
+		511A0EAC288836C40035A485 /* Adelle semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Adelle semibold.otf"; sourceTree = "<group>"; };
+		511A0EAD288836C40035A485 /* Gilroy-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Bold.otf"; sourceTree = "<group>"; };
+		511A0EAE288836C40035A485 /* Gilroy-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Gilroy-Semibold.otf"; sourceTree = "<group>"; };
+		511A0EAF288836C40035A485 /* Adelle italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Adelle italic.otf"; sourceTree = "<group>"; };
+		511A0EB0288836C40035A485 /* Adelle bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Adelle bold.otf"; sourceTree = "<group>"; };
+		511A0EB1288836C40035A485 /* Adelle_Reg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Adelle_Reg.otf; sourceTree = "<group>"; };
 		5A77B827BD85D2BAD4D1123E /* Pods-Authenticator_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Authenticator_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Authenticator_Tests/Pods-Authenticator_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		5C3EEC2ACBD5A3E62C348862 /* Pods-Authenticator_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Authenticator_Example.release.xcconfig"; path = "Target Support Files/Pods-Authenticator_Example/Pods-Authenticator_Example.release.xcconfig"; sourceTree = "<group>"; };
 		5DF91D12283516B300B80A9B /* SECryptoHelperSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECryptoHelperSpec.swift; sourceTree = "<group>"; };
@@ -664,6 +691,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		511A0EA8288836C40035A485 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				511A0EA9288836C40035A485 /* Gilroy-Medium.otf */,
+				511A0EAA288836C40035A485 /* Adelle regular.otf */,
+				511A0EAB288836C40035A485 /* Gilroy-Bold.ttf */,
+				511A0EAC288836C40035A485 /* Adelle semibold.otf */,
+				511A0EAD288836C40035A485 /* Gilroy-Bold.otf */,
+				511A0EAE288836C40035A485 /* Gilroy-Semibold.otf */,
+				511A0EAF288836C40035A485 /* Adelle italic.otf */,
+				511A0EB0288836C40035A485 /* Adelle bold.otf */,
+				511A0EB1288836C40035A485 /* Adelle_Reg.otf */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
 		5DF91D112835169E00B80A9B /* Crypto */ = {
 			isa = PBXGroup;
 			children = (
@@ -699,6 +742,7 @@
 		607FACD21AFB9204008FA782 /* Example for SaltedgeAuthenticatorSDK */ = {
 			isa = PBXGroup;
 			children = (
+				511A0EA8288836C40035A485 /* fonts */,
 				9DCED86522CE18270050ED3C /* Coordinators */,
 				9DCED7F522CE18270050ED3C /* Database */,
 				9DCED7DC22CE18270050ED3C /* Errors */,
@@ -1619,13 +1663,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				511A0EBA288836C40035A485 /* Gilroy-Bold.otf in Resources */,
+				511A0EB4288836C40035A485 /* Adelle regular.otf in Resources */,
 				9DCED92D22CE1DC30050ED3C /* LaunchScreen.storyboard in Resources */,
 				9DCED92722CE18280050ED3C /* application.example.plist in Resources */,
+				511A0EB6288836C40035A485 /* Gilroy-Bold.ttf in Resources */,
 				9DCED93722D3389C0050ED3C /* Assets.xcassets in Resources */,
 				F846BC112344FEC9005A9781 /* application.plist in Resources */,
+				511A0EB2288836C40035A485 /* Gilroy-Medium.otf in Resources */,
+				511A0EC2288836C50035A485 /* Adelle_Reg.otf in Resources */,
 				9D5B4C6E252E01F80060454F /* LICENSE.txt in Resources */,
+				511A0EB8288836C40035A485 /* Adelle semibold.otf in Resources */,
 				9DCED92322CE18280050ED3C /* GoogleService-Info.example.plist in Resources */,
 				9DCED92A22CE18280050ED3C /* Authenticator.strings in Resources */,
+				511A0EBE288836C40035A485 /* Adelle italic.otf in Resources */,
+				511A0EBC288836C40035A485 /* Gilroy-Semibold.otf in Resources */,
+				511A0EC0288836C50035A485 /* Adelle bold.otf in Resources */,
 				9D5B4C69252E01480060454F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1635,26 +1688,35 @@
 			buildActionMask = 2147483647;
 			files = (
 				9DE3246122D3986B00EB162A /* valid_providers_response.json in Resources */,
+				511A0EBF288836C40035A485 /* Adelle italic.otf in Resources */,
 				9D1DEE7D23DB503F003C79AC /* invalid_submit_action_data.json in Resources */,
 				9DE3246422D3986B00EB162A /* valid_unconfirmed_session_response.json in Resources */,
 				9DE308B92445BB05009EBD39 /* Authenticator.strings in Resources */,
 				9DE3245D22D3986B00EB162A /* valid_create_connection_data.json in Resources */,
 				9DE3246022D3986B00EB162A /* valid_confirm_authorization_data.json in Resources */,
 				9DE3245722D3986B00EB162A /* invalid_provider_response.json in Resources */,
+				511A0EC1288836C50035A485 /* Adelle bold.otf in Resources */,
 				9DE3246322D3986B00EB162A /* valid_provider_response.json in Resources */,
 				9DE3246722D3986B00EB162A /* valid_revoke_connection_data.json in Resources */,
 				9DE3245C22D3986B00EB162A /* valid_encrypted_authorizations_data.json in Resources */,
+				511A0EB5288836C40035A485 /* Adelle regular.otf in Resources */,
 				9DE3245E22D3986B00EB162A /* invalid_encrypted_data_response.json in Resources */,
+				511A0EBD288836C40035A485 /* Gilroy-Semibold.otf in Resources */,
+				511A0EBB288836C40035A485 /* Gilroy-Bold.otf in Resources */,
 				9DE3245422D3986B00EB162A /* test_private.pem in Resources */,
 				9D1DEE7B23DB4FE5003C79AC /* valid_submit_action_data.json in Resources */,
+				511A0EB9288836C40035A485 /* Adelle semibold.otf in Resources */,
 				9DE3246222D3986B00EB162A /* incorrect_encrypted_data.json in Resources */,
 				9DE3245B22D3986B00EB162A /* correct_encrypted_data.json in Resources */,
 				9DB125F12445B3300012A74C /* Assets.xcassets in Resources */,
 				9DE3245622D3986B00EB162A /* valid_encrypted_authorization_data.json in Resources */,
 				9DE3246522D3986B00EB162A /* invalid_confirm_authorization_data.json in Resources */,
 				9DE3245822D3986B00EB162A /* invalid_create_connection_data.json in Resources */,
+				511A0EC3288836C50035A485 /* Adelle_Reg.otf in Resources */,
 				9DE3245522D3986B00EB162A /* invalid_revoke_connection_data.json in Resources */,
 				9DE3245322D3986B00EB162A /* test_public.pem in Resources */,
+				511A0EB7288836C40035A485 /* Gilroy-Bold.ttf in Resources */,
+				511A0EB3288836C40035A485 /* Gilroy-Medium.otf in Resources */,
 				959E30BB247BF7DD0067354A /* application.example.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
