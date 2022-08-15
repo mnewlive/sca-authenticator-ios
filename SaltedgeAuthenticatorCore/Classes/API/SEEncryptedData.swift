@@ -38,7 +38,7 @@ public struct SEEncryptedData: SEBaseEncryptedAuthorizationData, Decodable, Equa
         case key
         case iv
     }
-
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         data = try container.decode(String.self, forKey: .data)
