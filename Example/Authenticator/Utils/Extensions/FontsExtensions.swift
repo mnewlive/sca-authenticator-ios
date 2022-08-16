@@ -33,7 +33,7 @@ extension UIFont {
     }
 
     static var auth_13medium: UIFont {
-        return UIFont.systemFont(ofSize: 13.0, weight: .medium)
+        return UIFont(name: "Gilroy-Medium", size: 13.0) ?? UIFont.systemFont(ofSize: 13.0, weight: .medium)
     }
 
     // MARK: - Font size 14
@@ -51,7 +51,7 @@ extension UIFont {
     }
 
     static var auth_15medium: UIFont {
-        return UIFont.systemFont(ofSize: 15.0, weight: .medium)
+        return UIFont(name: "Gilroy-Medium", size: 15.0) ?? UIFont.systemFont(ofSize: 15.0, weight: .medium)
     }
 
     static var auth_15semibold: UIFont {
