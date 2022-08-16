@@ -39,7 +39,7 @@
 "actions.view_connections" = "View connections";
 "actions.view_settings" = "View settings";
 "actions.processing" = "Processing";
-"actions.processing.description" = "This may take some time";
+"actions.processing.description" = "Please wait… We’re processing your request";
 "actions.access_to_location" = "Access to location";
 "authorization.screen.name" = "Authenticator";
 "authorization.success.title" = "Success";
@@ -80,7 +80,7 @@
 "in_app.authorizations.ip_address" = "IP address";
 "in_app.authorizations.authorization_expired" = "Authorization expired";
 "in_app.authorizations.no_authorizations" = "Nothing to authorize";
-"in_app.authorizations.no_authorizations_description" = "You don’t have any active authorization requests yet. Scan QR code for instant action or to connect new provider.";
+"in_app.authorizations.no_authorizations_description" = "No active authorisation request. Scan QR code to connect a new provider or authorise your actions.";
 "in_app.connection.connected_on" = "Linked on";
 "in_app.connection.active_consents" = "Active consents";
 "in_app.connection.consents_singular" = "consent";
@@ -110,10 +110,10 @@
 "in_app.connect.scan_qr_description" = "Scan the QR code to\ntake action";
 "in_app.connect.new_connection" = "New connection";
 "in_app.connect.no_connections" = "No connections";
-"in_app.connect.no_connections_description" = "Seems like you didn’t connect to your provider yet. Add new connection to securely confirm your actions.";
+"in_app.connect.no_connections_description" = "Connect with your provider to securely process your actions.";
 "in_app.connect.choose" = "Choose connection";
 "in_app.connect.success_title" = "was successfully connected!";
-"in_app.connect.success_description" = "You will receive an authentication request every time you make an action.";
+"in_app.connect.success_description" = "You will receive an authentication request for every action you make.";
 "in_app.passcode_confirmation.title" = "Enter Passcode or use Touch ID";
 "in_app.passcode_confirmation.title2" = "Enter Passcode or use Face ID";
 "in_app.passcode_new_passcode_success_message" = "New passcode successfully set";
@@ -148,11 +148,11 @@
 "instant_action.success_description" = "Action was successfully processed";
 "onboarding.allow_notifications.description" = "Enable notifications, to receive useful alerts and always be up to speed with your transactions.";
 "onboarding.allow_notifications.title" = "Allow Notifications";
-"onboarding.carousel_one.description" = "Asked to scan QR? Tap QR button to use the quick QR code scanner and take action.";
+"onboarding.carousel_one.description" = "Scan the QR code to quickly take action.";
 "onboarding.carousel_one.title" = "Use QR codes";
-"onboarding.carousel_two.description" = "Made transaction? You will get push notification. Open application, verify the transaction details and simply confirm.";
+"onboarding.carousel_two.description" = "Receive notifications for every transaction you make.";
 "onboarding.carousel_two.title" = "Full control";
-"onboarding.carousel_three.description" = "Strong customer authentication brings additional security to your payments, diminishing possibility of fraudulent activity.";
+"onboarding.carousel_three.description" = "Robust authentication process, securing your payments from fraudulent activity.";
 "onboarding.carousel_three.title" = "Ultimate security";
 "onboarding.find_connection.completed_title" = "Well done!";
 "onboarding.find_connection.completed_description" = "Application has been successfully set. Proceed to connect your service provider.";
@@ -167,6 +167,6 @@
 "onboarding.secure_app.passcode_title" = "Secure your Authenticator";
 "onboarding.secure_app.touch_id_allow" = "Allow Touch ID";
 "onboarding.secure_app.touch_id_description" = "Use Touch ID to enter the App faster, but don’t worry, you’ll still have your passcode as backup.";
-"onboarding.qr.first_scan_description" = "Scan the QR to make your \nfirst connection";
+"onboarding.qr.first_scan_description" = "Make your first connection \nby scanning the QR code";
 "onboarding.qr.take_action_description" = "Scan the QR code to\ntake action";
 "location.warning" = "Your service provider requires your GPS data to authorize/deny an action. To continue, please allow using the geolocation in your phone settings";
