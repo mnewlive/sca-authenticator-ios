@@ -79,8 +79,8 @@
 "in_app.connections_list.delete_connection" = "Are you sure you want to delete connection to your provider? This action cannot be undone.";
 "in_app.authorizations.ip_address" = "IP address";
 "in_app.authorizations.authorization_expired" = "Authorization expired";
-"in_app.authorizations.no_authorizations" = "Nothing to authorize";
-"in_app.authorizations.no_authorizations_description" = "No active authorisation request. Scan QR code to connect a new provider or authorise your actions.";
+"in_app.authorizations.no_authorizations" = "Take an action";
+"in_app.authorizations.no_authorizations_description" = "No active authentication requests. Scan QR code to connect another account or process your actions.";
 "in_app.connection.connected_on" = "Linked on";
 "in_app.connection.active_consents" = "Active consents";
 "in_app.connection.consents_singular" = "consent";
