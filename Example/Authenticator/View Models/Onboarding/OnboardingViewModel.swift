@@ -112,5 +112,5 @@ class OnboardingViewModel {
     let pageIndicatorTintColor: UIColor = .lightGray
     let titleColor: UIColor = .primary
 
-    let buttonFont: UIFont = .systemFont(ofSize: 18.0, weight: .medium)
+    let buttonFont: UIFont = .auth_18medium
 }

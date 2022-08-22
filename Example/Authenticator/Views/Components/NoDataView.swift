@@ -44,8 +44,8 @@ class NoDataView: UIView {
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
-    private let titleLabel = UILabel(font: .systemFont(ofSize: 21.0))
-    private let descriptionLabel = UILabel(font: .systemFont(ofSize: 17.0))
+    private let titleLabel = UILabel(font: .auth_20semibold)
+    private let descriptionLabel = UILabel(font: .auth_17regular)
     private var button: CustomButton?
 
     var onCTAPress: (() -> ())?

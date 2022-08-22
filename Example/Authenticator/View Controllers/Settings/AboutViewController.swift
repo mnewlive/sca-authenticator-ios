@@ -33,7 +33,7 @@ final class AboutViewController: BaseViewController {
         let label = UILabel()
         label.backgroundColor = .backgroundColor
         label.text = l10n(.copyrightDescription)
-        label.font = .systemFont(ofSize: 15.0)
+        label.font = .auth_15regular
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textColor = .titleColor

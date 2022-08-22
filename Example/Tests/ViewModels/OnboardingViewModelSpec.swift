@@ -186,7 +186,7 @@ final class OnboardingViewModelSpec: BaseSpec {
 
             context("buttonFont") {
                 it("should return correct font with given name") {
-                    expect(viewModel.buttonFont).to(equal(UIFont.systemFont(ofSize: 18.0, weight: .medium)))
+                    expect(viewModel.buttonFont).to(equal(UIFont.auth_18medium))
                 }
             }
         }

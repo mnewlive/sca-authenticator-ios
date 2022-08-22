@@ -31,8 +31,8 @@ private struct Layout {
 
 final class AuthorizationStateView: UIView {
     private let topView = RoundedShadowView(cornerRadius: 16.0)
-    private let titleLabel = UILabel(font: .systemFont(ofSize: 21.0, weight: .regular), textColor: .titleColor)
-    private let messageLabel = UILabel(font: .systemFont(ofSize: 17.0, weight: .regular), textColor: .titleColor)
+    private let titleLabel = UILabel(font: .auth_21regular, textColor: .titleColor)
+    private let messageLabel = UILabel(font: .auth_17regular, textColor: .titleColor)
     private var accessoryView: UIView?
 
     enum AuthorizationState: String, Equatable {

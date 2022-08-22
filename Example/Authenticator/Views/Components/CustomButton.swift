@@ -53,7 +53,7 @@ class CustomButton: UIButton {
     init(text: String, height: CGFloat = Layout.height, textColor: UIColor = .white, backgroundColor: UIColor = .primaryDark) {
         super.init(frame: .zero)
         self.backgroundColor = backgroundColor
-        titleLabel?.font = .systemFont(ofSize: 18.0, weight: .medium)
+        titleLabel?.font = .auth_18medium
         setTitle(text, for: .normal)
         setTitleColor(textColor, for: .normal)
         setTitleColor(textColor, for: .highlighted)

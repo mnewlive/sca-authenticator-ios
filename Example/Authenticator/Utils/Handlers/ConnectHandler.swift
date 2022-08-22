@@ -67,7 +67,7 @@ final class ConnectHandler {
         ConnectionRepository.save(connection)
         let attributedConnectionName = NSAttributedString(
             string: connection.name,
-            attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 21.0)]
+            attributes: [NSAttributedString.Key.font: UIFont.auth_21semibold]
         )
         let description = NSAttributedString(string: " \(l10n(.connectedSuccessfullyTitle))")
         let finalString = NSMutableAttributedString()

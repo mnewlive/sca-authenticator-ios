@@ -36,7 +36,7 @@ final class MessageBarView: UIView {
 
     let alertLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14.0)
+        label.font = .auth_14regular
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         label.textAlignment = .center

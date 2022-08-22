@@ -92,7 +92,7 @@ extension UIViewController {
         alertController.addTextField { textField in
             textField.placeholder = placeholder
             textField.textAlignment = .left
-            textField.font = UIFont.systemFont(ofSize: 14.0)
+            textField.font = UIFont.auth_14regular
             textField.autocorrectionType = .no
             textField.spellCheckingType = .no
         }
