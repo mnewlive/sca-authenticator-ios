@@ -70,6 +70,10 @@ extension UIColor {
     static var extraTextColor: UIColor {
         return UIColor(named: "extraTextColor", in: .authenticator_main, compatibleWith: nil)!
     }
+    
+    static var white_dark80: UIColor {
+        return UIColor(named: "white_dark80", in: .authenticator_main, compatibleWith: nil)!
+    }
 
     static var white_dark100: UIColor {
         return UIColor(named: "white_dark100", in: .authenticator_main, compatibleWith: nil)!
