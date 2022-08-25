@@ -27,7 +27,7 @@ class RoundedShadowView: UIView {
     init(cornerRadius: CGFloat) {
         super.init(frame: .zero)
         layer.cornerRadius = cornerRadius
-        backgroundColor = .white_dark80
+        backgroundColor = .secondaryBackground
     }
 
     required init?(coder: NSCoder) {

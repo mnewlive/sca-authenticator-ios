@@ -54,7 +54,7 @@ final class PasscodeView: UIView {
     private let wrongPasscodeLabel: UILabel = {
         let label = UILabel()
         label.alpha = 0.0
-        label.backgroundColor = .extraLightGray
+        label.backgroundColor = .dark60_grayExtra
         label.layer.cornerRadius = Layout.wrongPasscodeLabelHeight / 2
         label.font = .auth_14regular
         label.layer.masksToBounds = true
