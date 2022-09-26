@@ -36,7 +36,7 @@ final class AuthorizationContentView: UIView {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 24.0, weight: .regular)
+        label.font = .auth_24regular
         label.textColor = .titleColor
         label.textAlignment = .center
         label.numberOfLines = 4

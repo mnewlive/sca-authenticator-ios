@@ -3,16 +3,6 @@
     {
       "filename" : "saltedge_dark.pdf",
       "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "saltedge_light.pdf",
-      "idiom" : "universal"
     }
   ],
   "info" : {

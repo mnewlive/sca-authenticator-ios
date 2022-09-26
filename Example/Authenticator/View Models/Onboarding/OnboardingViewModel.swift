@@ -108,9 +108,9 @@ class OnboardingViewModel {
 
     // MARK: - Style
     let backgroundColor: UIColor = .backgroundColor
-    let indicatorColor: UIColor = .lightBlue
+    let indicatorColor: UIColor = .primary
     let pageIndicatorTintColor: UIColor = .lightGray
-    let titleColor: UIColor = .lightBlue
+    let titleColor: UIColor = .primary
 
-    let buttonFont: UIFont = .systemFont(ofSize: 18.0, weight: .medium)
+    let buttonFont: UIFont = .auth_18medium
 }

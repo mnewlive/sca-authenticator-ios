@@ -43,7 +43,7 @@ final class PasscodeSymbolView: UIView {
     }
 
     func animateCircle() {
-        animateFillColor(to: .lightBlue)
+        animateFillColor(to: .primary)
     }
 
     func animateEmpty() {

@@ -45,7 +45,7 @@ extension UIViewController {
                                confirmAction: ((UIAlertAction) -> ())? = nil,
                                cancelAction: ((UIAlertAction) -> ())? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.view.tintColor = .lightBlue
+        alert.view.tintColor = .primary
         let cancelAction = UIAlertAction(title: cancelTitle, style: .cancel, handler: cancelAction)
         alert.addAction(cancelAction)
         if confirmAction != nil {
@@ -92,7 +92,7 @@ extension UIViewController {
         alertController.addTextField { textField in
             textField.placeholder = placeholder
             textField.textAlignment = .left
-            textField.font = UIFont.systemFont(ofSize: 14.0)
+            textField.font = UIFont.auth_14regular
             textField.autocorrectionType = .no
             textField.spellCheckingType = .no
         }
@@ -118,7 +118,7 @@ extension UIViewController {
                        actionTitle: String = l10n(.done),
                        completion: (() -> ())? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.view.tintColor = .lightBlue
+        alert.view.tintColor = .primary
         let cancelAction = UIAlertAction(title: actionTitle, style: .cancel, handler: { _ in completion?() })
         alert.addAction(cancelAction)
         present(alert, animated: true)

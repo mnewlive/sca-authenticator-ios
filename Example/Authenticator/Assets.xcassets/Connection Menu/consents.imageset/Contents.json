@@ -3,16 +3,6 @@
     {
       "filename" : "consents_light.pdf",
       "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "consents_dark.pdf",
-      "idiom" : "universal"
     }
   ],
   "info" : {

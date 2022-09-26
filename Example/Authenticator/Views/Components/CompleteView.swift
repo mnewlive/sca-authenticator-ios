@@ -66,8 +66,8 @@ final class CompleteView: UIView {
 
     private let imageContainerView = RoundedShadowView(cornerRadius: 16.0)
     private var accessoryView: UIView?
-    private let titleLabel = UILabel(font: .systemFont(ofSize: 21.0, weight: .regular), textColor: .titleColor)
-    private let descriptionLabel = UILabel(font: .systemFont(ofSize: 17.0, weight: .regular), textColor: .titleColor)
+    private let titleLabel = UILabel(font: .auth_21regular, textColor: .titleColor)
+    private let descriptionLabel = UILabel(font: .auth_17regular, textColor: .titleColor)
     private let proceedButton: CustomButton
     private var state: State
 

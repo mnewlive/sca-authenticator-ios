@@ -3,16 +3,6 @@
     {
       "filename" : "reconnect_light.pdf",
       "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "reconnect_dark.pdf",
-      "idiom" : "universal"
     }
   ],
   "info" : {

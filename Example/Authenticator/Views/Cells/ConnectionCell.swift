@@ -87,7 +87,7 @@ final class ConnectionCell: UITableViewCell, Dequeuable {
         didSet {
             if picked {
                 cardView.layer.borderWidth = 2.0
-                cardView.layer.borderColor = UIColor.lightBlue.cgColor
+                cardView.layer.borderColor = UIColor.primary.cgColor
             } else {
                 cardView.layer.borderWidth = 0.0
                 cardView.layer.borderColor = nil
@@ -135,9 +135,8 @@ private extension ConnectionCell {
     func setupContentContainer() {
         backgroundColor = .backgroundColor
 
-        contentView.layer.shadowColor = UIColor(red: 0.374, green: 0.426, blue: 0.488, alpha: 0.3).cgColor
         contentView.layer.shadowOffset = CGSize(width: 0, height: 6)
-        contentView.layer.shadowOpacity = 0.8
+        contentView.layer.shadowOpacity = 0.2
         contentView.layer.shadowRadius = Layout.cardViewTopBottomOffset
     }
 }

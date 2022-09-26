@@ -25,73 +25,101 @@ import UIKit
 extension UIFont {
     // MARK: - Font size 13
     static var auth_13regular: UIFont {
-        return UIFont.systemFont(ofSize: 13.0, weight: .regular)
+        return UIFont(name: "Adelle-Regular", size: 13.0) ?? UIFont.systemFont(ofSize: 13.0, weight: .regular)
     }
 
     static var auth_13semibold: UIFont {
-        return UIFont.systemFont(ofSize: 13.0, weight: .semibold)
+        return UIFont(name: "Gilroy-Bold", size: 13.0) ?? UIFont.systemFont(ofSize: 13.0, weight: .semibold)
     }
 
     static var auth_13medium: UIFont {
-        return UIFont.systemFont(ofSize: 13.0, weight: .medium)
+        return UIFont(name: "Gilroy-Medium", size: 13.0) ?? UIFont.systemFont(ofSize: 13.0, weight: .medium)
     }
 
     // MARK: - Font size 14
     static var auth_14regular: UIFont {
-        return UIFont.systemFont(ofSize: 14.0, weight: .regular)
+        return UIFont(name: "Adelle-Regular", size: 14.0) ?? UIFont.systemFont(ofSize: 14.0, weight: .regular)
     }
 
     static var auth_14semibold: UIFont {
-        return UIFont.systemFont(ofSize: 14.0, weight: .semibold)
+        return UIFont(name: "Gilroy-Bold", size: 14.0) ?? UIFont.systemFont(ofSize: 14.0, weight: .semibold)
     }
 
     // MARK: - Font size 15
     static var auth_15regular: UIFont {
-        return UIFont.systemFont(ofSize: 15.0, weight: .regular)
+        return UIFont(name: "Adelle-Regular", size: 15.0) ?? UIFont.systemFont(ofSize: 15.0, weight: .regular)
     }
 
     static var auth_15medium: UIFont {
-        return UIFont.systemFont(ofSize: 15.0, weight: .medium)
+        return UIFont(name: "Gilroy-Medium", size: 15.0) ?? UIFont.systemFont(ofSize: 15.0, weight: .medium)
     }
 
     static var auth_15semibold: UIFont {
-        return UIFont.systemFont(ofSize: 15.0, weight: .semibold)
+        return UIFont(name: "Gilroy-Bold", size: 15.0) ?? UIFont.systemFont(ofSize: 15.0, weight: .semibold)
     }
 
     // MARK: - Font size 15
     static var auth_16regular: UIFont {
-        return UIFont.systemFont(ofSize: 16.0, weight: .regular)
+        return UIFont(name: "Adelle-Regular", size: 16.0) ?? UIFont.systemFont(ofSize: 16.0, weight: .regular)
     }
 
     static var auth_16semibold: UIFont {
-        return UIFont.systemFont(ofSize: 16.0, weight: .semibold)
+        return UIFont(name: "Gilroy-Bold", size: 16.0) ?? UIFont.systemFont(ofSize: 16.0, weight: .semibold)
     }
 
     // MARK: - Font size 17
     static var auth_17regular: UIFont {
-        return UIFont.systemFont(ofSize: 17.0, weight: .regular)
+        return UIFont(name: "Adelle-Regular", size: 17.0) ?? UIFont.systemFont(ofSize: 17.0, weight: .regular)
+    }
+    
+    static var auth_18medium: UIFont {
+        return UIFont(name: "Gilroy-Medium", size: 18.0) ?? UIFont.systemFont(ofSize: 18.0, weight: .medium)
+    }
+    
+    static var auth_18semibold: UIFont {
+        return UIFont(name: "Gilroy-Bold", size: 18.0) ?? UIFont.systemFont(ofSize: 18.0, weight: .semibold)
     }
 
     // MARK: - Font size 19
     static var auth_19regular: UIFont {
-        return UIFont.systemFont(ofSize: 19.0, weight: .regular)
+        return UIFont(name: "Adelle-Regular", size: 19.0) ?? UIFont.systemFont(ofSize: 19.0, weight: .regular)
     }
 
     static var auth_19semibold: UIFont {
-        return UIFont.systemFont(ofSize: 19.0, weight: .semibold)
+        return UIFont(name: "Gilroy-Bold", size: 19.0) ?? UIFont.systemFont(ofSize: 19.0, weight: .semibold)
     }
 
     // MARK: - Font size 20
     static var auth_20regular: UIFont {
-        return UIFont.systemFont(ofSize: 20.0, weight: .regular)
+        return UIFont(name: "Adelle-Regular", size: 20.0) ?? UIFont.systemFont(ofSize: 20.0, weight: .regular)
     }
 
     static var auth_20semibold: UIFont {
-        return UIFont.systemFont(ofSize: 20.0, weight: .semibold)
+        return UIFont(name: "Gilroy-Bold", size: 20.0) ?? UIFont.systemFont(ofSize: 20.0, weight: .semibold)
+    }
+    
+    static var auth_21semibold: UIFont {
+        return UIFont(name: "Gilroy-Bold", size: 21.0) ?? UIFont.systemFont(ofSize: 21.0, weight: .semibold)
+    }
+    
+    static var auth_21regular: UIFont {
+        return UIFont(name: "Adelle-Regular", size: 21.0) ?? UIFont.systemFont(ofSize: 21.0, weight: .regular)
+    }
+    
+    static var auth_24regular: UIFont {
+        return UIFont(name: "Adelle-Regular", size: 24.0) ?? UIFont.systemFont(ofSize: 24.0, weight: .regular)
     }
 
     // MARK: - Font size 26
     static var auth_26regular: UIFont {
-        return UIFont.systemFont(ofSize: 26.0, weight: .regular)
+        return UIFont(name: "Adelle-Regular", size: 26.0) ?? UIFont.systemFont(ofSize: 26.0, weight: .regular)
+    }
+    
+    static var auth_26semibold: UIFont {
+        return UIFont(name: "Gilroy-Bold", size: 26.0) ?? UIFont.systemFont(ofSize: 26.0, weight: .semibold)
+    }
+    
+    static var auth_30semibold: UIFont {
+        return UIFont(name: "Gilroy-Bold", size: 30.0) ?? UIFont.systemFont(ofSize: 30.0, weight: .semibold)
     }
 }

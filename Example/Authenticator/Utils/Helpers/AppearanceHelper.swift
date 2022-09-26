@@ -38,13 +38,13 @@ struct AppearanceHelper {
         navBarAppearance.barStyle = .default
         navBarAppearance.backgroundColor = .backgroundColor
         navBarAppearance.barTintColor = .backgroundColor
-        navBarAppearance.tintColor = .lightBlue
+        navBarAppearance.tintColor = .primary
         navBarAppearance.isTranslucent = false
         navBarAppearance.shadowImage = UIImage()
         navBarAppearance.prefersLargeTitles = true
         navBarAppearance.largeTitleTextAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.titleColor,
-            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 30)
+            NSAttributedString.Key.font: UIFont.auth_30semibold
         ]
     }
 }

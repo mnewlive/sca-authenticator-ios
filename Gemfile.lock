@@ -72,8 +72,8 @@ GEM
       rouge (~> 2.0.7)
 
 PLATFORMS
-  ruby
   -darwin-21
+  ruby
   universal-darwin-20
   x86_64-darwin-19
 

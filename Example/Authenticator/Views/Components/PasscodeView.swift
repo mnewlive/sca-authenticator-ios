@@ -54,9 +54,9 @@ final class PasscodeView: UIView {
     private let wrongPasscodeLabel: UILabel = {
         let label = UILabel()
         label.alpha = 0.0
-        label.backgroundColor = .extraLightGray
+        label.backgroundColor = .dark60_grayExtra
         label.layer.cornerRadius = Layout.wrongPasscodeLabelHeight / 2
-        label.font = .systemFont(ofSize: 14.0, weight: .regular)
+        label.font = .auth_14regular
         label.layer.masksToBounds = true
         label.textAlignment = .center
         return label
@@ -240,7 +240,7 @@ extension PasscodeView: Layoutable {
 // MARK: - Styleable
 extension PasscodeView: Styleable {
     func stylize() {
-        titleLabel.font = .systemFont(ofSize: 19.0, weight: .regular)
+        titleLabel.font = .auth_19regular
         titleLabel.textAlignment = .center
         titleLabel.textColor = .titleColor
     }

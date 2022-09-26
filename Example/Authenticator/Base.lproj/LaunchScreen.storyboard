@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina5_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,46 +13,33 @@
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
-                        <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
+                        <viewControllerLayoutGuide type="top" id="HQK-b2-YAb"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZKt-xV-7hs"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchGroup" translatesAutoresizingMaskIntoConstraints="NO" id="Npg-97-4j3">
-                                <rect key="frame" x="40" y="164" width="295" height="213"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="213" id="gIo-1s-0Tz"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="saltedge" translatesAutoresizingMaskIntoConstraints="NO" id="E4t-3C-ktm">
-                                <rect key="frame" x="129" y="748" width="117" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="24" id="0iF-YF-jvs"/>
-                                    <constraint firstAttribute="width" constant="117" id="b1I-UP-EPj"/>
-                                </constraints>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="saltedge" translatesAutoresizingMaskIntoConstraints="NO" id="E4t-3C-ktm">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" name="background"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="Npg-97-4j3" secondAttribute="trailing" constant="24" id="8rx-6W-awQ"/>
-                            <constraint firstItem="Npg-97-4j3" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="120" id="Lkv-kQ-fpZ"/>
-                            <constraint firstAttribute="bottom" secondItem="E4t-3C-ktm" secondAttribute="bottom" constant="40" id="Tam-X2-cUA"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="E4t-3C-ktm" secondAttribute="trailing" constant="113" id="arW-Wg-bFZ"/>
-                            <constraint firstItem="Npg-97-4j3" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="24" id="kTO-q9-jWC"/>
-                            <constraint firstItem="E4t-3C-ktm" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="113" id="xMk-mb-pFh"/>
+                            <constraint firstAttribute="trailing" secondItem="E4t-3C-ktm" secondAttribute="trailing" id="GFr-jl-bmW"/>
+                            <constraint firstItem="E4t-3C-ktm" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="Xst-Bf-SHh"/>
+                            <constraint firstAttribute="bottom" secondItem="E4t-3C-ktm" secondAttribute="bottom" id="lzU-E7-wFI"/>
+                            <constraint firstItem="E4t-3C-ktm" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="xNk-K9-1pb"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="52" y="374.66266866566718"/>
+            <point key="canvasLocation" x="52" y="374.6305418719212"/>
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchGroup" width="295" height="239"/>
-        <image name="saltedge" width="117" height="24"/>
+        <image name="saltedge" width="360" height="720"/>
         <namedColor name="background">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

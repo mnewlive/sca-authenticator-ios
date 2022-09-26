@@ -123,15 +123,16 @@ private extension PasscodeKeyboard {
             button.setTitle(title, for: .normal)
             button.setTitleColor(.titleColor, for: .normal)
             if title == l10n(.forgot) {
-                button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
+                button.titleLabel?.font = .auth_18semibold
             } else {
-                button.titleLabel?.font = .systemFont(ofSize: 30, weight: .semibold)
+                button.titleLabel?.font = .auth_30semibold
             }
             button.addTarget(self, action: #selector(buttonPressed(_:)), for: .touchUpInside)
         } else {
             actionButton.setImage(actionButtonImage, for: .normal)
             actionButton.setImage(actionButtonImage, for: .highlighted)
             actionButton.addTarget(self, action: #selector(actionButtonPressed(_:)), for: .touchUpInside)
+            actionButton.tintColor = .primary
             button = actionButton
         }
         return button

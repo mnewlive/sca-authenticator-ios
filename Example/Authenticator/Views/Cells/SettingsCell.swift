@@ -33,9 +33,16 @@ final class SettingsCell: UITableViewCell, Dequeuable {
         detailTextLabel?.font = .auth_13regular
         contentView.tintColor = .extraLightGray
     }
+    
+    func setSelectedBackgroundView() -> UIView {
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = .selectedColor
+        return bgColorView
+    }
 
     func set(with item: SettingCellModel) {
         imageView?.image = item.icon
+        imageView?.tintColor = .primary
         textLabel?.text = item.localizedLabel
         if let detailsText = item.detailString {
             detailTextLabel?.text = detailsText

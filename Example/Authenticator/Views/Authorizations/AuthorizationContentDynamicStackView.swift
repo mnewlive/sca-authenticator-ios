@@ -76,7 +76,7 @@ final class AuthorizationContentDynamicStackView: UIStackView {
         }
         if let text = attributes[SENetKeys.text] as? String {
             let label = UILabel(
-                font: .systemFont(ofSize: 16.0, weight: .regular),
+                font: .auth_16regular,
                 alignment: .left,
                 textColor: FieldType.text.textColor
             )
@@ -104,11 +104,11 @@ final class AuthorizationContentDynamicStackView: UIStackView {
     private func contentView(title: String? = nil, description: String, fieldType: FieldType) -> UIView {
         let contentView = UIView()
         let contentTitleLabel = UILabel(
-            font: .systemFont(ofSize: 16.0, weight: .regular),
+            font: .auth_16regular,
             textColor: fieldType.textColor
         )
         let descriptionLabel = UILabel(
-            font: .systemFont(ofSize: 16.0, weight: .regular),
+            font: .auth_16regular,
             alignment: .right,
             textColor: fieldType == .payment ? .titleColor : FieldType.extra.textColor
         )

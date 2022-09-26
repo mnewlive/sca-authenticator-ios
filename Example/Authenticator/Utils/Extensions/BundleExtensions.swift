@@ -27,3 +27,4 @@ extension Bundle {
         return Bundle(for: AppSettings.self)
     }
 }
+  

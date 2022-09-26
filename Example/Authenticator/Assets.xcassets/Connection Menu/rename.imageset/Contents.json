@@ -3,16 +3,6 @@
     {
       "filename" : "rename_light.pdf",
       "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "rename_dark.pdf",
-      "idiom" : "universal"
     }
   ],
   "info" : {

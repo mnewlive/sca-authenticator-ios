@@ -93,11 +93,11 @@ extension FeaturesCollectionViewCell: Layoutable {
 // MARK: - Styleable
 extension FeaturesCollectionViewCell: Styleable {
     func stylize() {
-        titleLabel.font = .systemFont(ofSize: 26.0, weight: .semibold)
+        titleLabel.font = .auth_26semibold
         titleLabel.textAlignment = .left
         titleLabel.textColor = .titleColor
 
-        descriptionLabel.font = .systemFont(ofSize: 17.0, weight: .regular)
+        descriptionLabel.font = .auth_17regular
         descriptionLabel.textAlignment = .left
         descriptionLabel.numberOfLines = 0
         descriptionLabel.textColor = .titleColor

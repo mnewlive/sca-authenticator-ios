@@ -51,7 +51,7 @@ final class SingleAuthorizationViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        authorizationHeaderView.backgroundColor = .backgroundColor
+        authorizationHeaderView.backgroundColor = .secondaryBackground
         contentView.backgroundColor = .clear
         layout()
     }
