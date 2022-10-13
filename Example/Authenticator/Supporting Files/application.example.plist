@@ -3,20 +3,20 @@
 <plist version="1.0">
 <dict>
 	<key>terms</key>
-	<string>pages/authenticator_terms</string>
+	<string>mobile-authenticator-terms</string>
 	<key>PRODUCTION</key>
 	<dict>
 		<key>RootURL</key>
-		<string>https://www.saltedge.com</string>
+		<string>https://www.argentex.com</string>
 		<key>support_email</key>
-		<string>authenticator@saltedge.com</string>
+		<string>info@argentex.com</string>
 	</dict>
 	<key>STAGING</key>
 	<dict>
 		<key>RootURL</key>
-		<string>https://www.saltedge.com</string>
+		<string>https://www.argentex.com</string>
 		<key>support_email</key>
-		<string>authenticator@saltedge.com</string>
+		<string>info@argentex.com</string>
 	</dict>
 </dict>
 </plist>
