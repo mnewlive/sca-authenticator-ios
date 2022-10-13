@@ -26,7 +26,7 @@
 		511A0EC1288836C50035A485 /* Adelle bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EB0288836C40035A485 /* Adelle bold.otf */; };
 		511A0EC2288836C50035A485 /* Adelle_Reg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EB1288836C40035A485 /* Adelle_Reg.otf */; };
 		511A0EC3288836C50035A485 /* Adelle_Reg.otf in Resources */ = {isa = PBXBuildFile; fileRef = 511A0EB1288836C40035A485 /* Adelle_Reg.otf */; };
-		5192166C28DDEFF800FDEFD4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5192166B28DDEFF800FDEFD4 /* GoogleService-Info.plist */; };
+		518C5DC428F803A800ADA83A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 518C5DC328F803A800ADA83A /* GoogleService-Info.plist */; };
 		5DF91D13283516B300B80A9B /* SECryptoHelperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF91D12283516B300B80A9B /* SECryptoHelperSpec.swift */; };
 		6CF5A0163F3E926E5B271FBE /* Pods_Authenticator_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC7966F04DE3EFEB4C47030C /* Pods_Authenticator_Tests.framework */; };
 		8432878826CE378400F77DD5 /* AuthorizationStatusSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432878726CE378400F77DD5 /* AuthorizationStatusSpec.swift */; };
@@ -424,7 +424,7 @@
 		511A0EAF288836C40035A485 /* Adelle italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Adelle italic.otf"; sourceTree = "<group>"; };
 		511A0EB0288836C40035A485 /* Adelle bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Adelle bold.otf"; sourceTree = "<group>"; };
 		511A0EB1288836C40035A485 /* Adelle_Reg.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Adelle_Reg.otf; sourceTree = "<group>"; };
-		5192166B28DDEFF800FDEFD4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		518C5DC328F803A800ADA83A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5A77B827BD85D2BAD4D1123E /* Pods-Authenticator_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Authenticator_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Authenticator_Tests/Pods-Authenticator_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		5C3EEC2ACBD5A3E62C348862 /* Pods-Authenticator_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Authenticator_Example.release.xcconfig"; path = "Target Support Files/Pods-Authenticator_Example/Pods-Authenticator_Example.release.xcconfig"; sourceTree = "<group>"; };
 		5DF91D12283516B300B80A9B /* SECryptoHelperSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECryptoHelperSpec.swift; sourceTree = "<group>"; };
@@ -1399,10 +1399,10 @@
 		9DCED88B22CE18280050ED3C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5192166B28DDEFF800FDEFD4 /* GoogleService-Info.plist */,
 				9D453CCC23D06F0E00702695 /* TimerApplication.swift */,
 				9DCED88D22CE18280050ED3C /* GoogleService-Info.example.plist */,
 				9DCED89022CE18280050ED3C /* AppDelegate.swift */,
+				518C5DC328F803A800ADA83A /* GoogleService-Info.plist */,
 				9D453CC023CCB56400702695 /* main.swift */,
 				9DCED89122CE18280050ED3C /* application.example.plist */,
 				9DCED89322CE18280050ED3C /* Info.plist */,
@@ -1675,7 +1675,7 @@
 				9D5B4C6E252E01F80060454F /* LICENSE.txt in Resources */,
 				511A0EB8288836C40035A485 /* Adelle semibold.otf in Resources */,
 				9DCED92322CE18280050ED3C /* GoogleService-Info.example.plist in Resources */,
-				5192166C28DDEFF800FDEFD4 /* GoogleService-Info.plist in Resources */,
+				518C5DC428F803A800ADA83A /* GoogleService-Info.plist in Resources */,
 				9DCED92A22CE18280050ED3C /* Authenticator.strings in Resources */,
 				511A0EBE288836C40035A485 /* Adelle italic.otf in Resources */,
 				511A0EBC288836C40035A485 /* Gilroy-Semibold.otf in Resources */,

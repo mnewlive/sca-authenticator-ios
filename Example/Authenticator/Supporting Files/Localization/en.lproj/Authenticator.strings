@@ -41,7 +41,7 @@
 "actions.processing" = "Processing";
 "actions.processing.description" = "Please wait… We’re processing your request";
 "actions.access_to_location" = "Access to location";
-"authorization.screen.name" = "Authenticator";
+"authorization.screen.name" = "Argentex";
 "authorization.success.title" = "Success";
 "authorization.time_out.title" = "Time Out";
 "authorization.denied.title" = "Denied";
