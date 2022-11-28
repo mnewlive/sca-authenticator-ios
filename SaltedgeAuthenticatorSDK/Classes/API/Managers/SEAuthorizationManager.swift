@@ -21,44 +21,53 @@
 //
 
 import Foundation
+import SEAuthenticatorCore
 
 public struct SEAuthorizationManager {
-    public static func getEncryptedAuthorizations(data: SEBaseAuthorizationData,
-                                                  onSuccess success: @escaping HTTPServiceSuccessClosure<SEAuthorizationsResponse>,
-                                                  onFailure failure: @escaping FailureBlock) {
-        HTTPService<SEAuthorizationsResponse>.execute(
-            request: SEAuthorizationRouter.list(data),
-            success: success,
+    public static func getEncryptedAuthorizations(
+        data: SEBaseAuthenticatedRequestData,
+        onSuccess success: SEHTTPResponse<SEEncryptedListResponse>,
+        onFailure failure: @escaping FailureBlock
+    ) {
+        HTTPService<SEEncryptedListResponse>.makeRequest(
+            SEAuthorizationRouter.list(data),
+            completion: success,
             failure: failure
         )
     }
 
-    public static func getEncryptedAuthorization(data: SEAuthorizationData,
-                                                 onSuccess success: @escaping HTTPServiceSuccessClosure<SEAuthorizationResponse>,
-                                                 onFailure failure: @escaping FailureBlock) {
-        HTTPService<SEAuthorizationResponse>.execute(
-            request: SEAuthorizationRouter.getAuthorization(data),
-            success: success,
+    public static func getEncryptedAuthorization(
+        data: SEBaseAuthenticatedWithIdRequestData,
+        onSuccess success: SEHTTPResponse<SEEncryptedDataResponse>,
+        onFailure failure: @escaping FailureBlock
+    ) {
+        HTTPService<SEEncryptedDataResponse>.makeRequest(
+            SEAuthorizationRouter.getAuthorization(data),
+            completion: success,
             failure: failure
         )
     }
 
-    public static func confirmAuthorization(data: SEConfirmAuthorizationData,
-                                            onSuccess success: @escaping HTTPServiceSuccessClosure<SEConfirmAuthorizationResponse>,
-                                            onFailure failure: @escaping FailureBlock) {
-        HTTPService<SEConfirmAuthorizationResponse>.execute(
-            request: SEAuthorizationRouter.confirm(data),
-            success: success,
+    public static func confirmAuthorization(
+        data: SEConfirmAuthorizationRequestData,
+        onSuccess success: SEHTTPResponse<SEConfirmAuthorizationResponse>,
+        onFailure failure: @escaping FailureBlock
+    ) {
+        HTTPService<SEConfirmAuthorizationResponse>.makeRequest(
+            SEAuthorizationRouter.confirm(data),
+            completion: success,
             failure: failure
         )
     }
 
-    public static func denyAuthorization(data: SEConfirmAuthorizationData,
-                                         onSuccess success: @escaping HTTPServiceSuccessClosure<SEConfirmAuthorizationResponse>,
-                                         onFailure failure: @escaping FailureBlock) {
-        HTTPService<SEConfirmAuthorizationResponse>.execute(
-            request: SEAuthorizationRouter.deny(data),
-            success: success,
+    public static func denyAuthorization(
+        data: SEConfirmAuthorizationRequestData,
+        onSuccess success: SEHTTPResponse<SEConfirmAuthorizationResponse>,
+        onFailure failure: @escaping FailureBlock
+    ) {
+        HTTPService<SEConfirmAuthorizationResponse>.makeRequest(
+            SEAuthorizationRouter.deny(data),
+            completion: success,
             failure: failure
         )
     }

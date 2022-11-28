@@ -34,6 +34,7 @@ class ConnectionCollectorSpec: BaseSpec {
             firstConnection.accessToken = "12345aaa"
             firstConnection.status = "active"
             firstConnection.name = "First"
+            firstConnection.baseUrlString = "https://firstConnectUrl.com"
 
             ConnectionRepository.save(firstConnection)
 
@@ -42,6 +43,7 @@ class ConnectionCollectorSpec: BaseSpec {
             secondConnection.accessToken = "6789bbb"
             secondConnection.status = "inactive"
             secondConnection.name = "Second"
+            secondConnection.baseUrlString = "https://someConnectUrl.com"
 
             ConnectionRepository.save(secondConnection)
         }
@@ -52,7 +54,7 @@ class ConnectionCollectorSpec: BaseSpec {
 
         describe("allConnections") {
             it("should return array of all connections") {
-                expect(Array(ConnectionsCollector.allConnections)).to(equal([firstConnection, secondConnection]))
+                expect(Set(ConnectionsCollector.allConnections)).to(equal(Set([firstConnection, secondConnection])))
             }
         }
 
@@ -62,19 +64,58 @@ class ConnectionCollectorSpec: BaseSpec {
             }
         }
 
+        describe("activeConnections(by connectUrl)") {
+            it("should return array only of active connections filtered by connect url") {
+                let thirdConnection = Connection()
+                thirdConnection.id = "third"
+                thirdConnection.status = "active"
+                thirdConnection.baseUrlString = "https://firstConnectUrl.com"
+
+                ConnectionRepository.save(thirdConnection)
+
+                let fourthConnection = Connection()
+                fourthConnection.id = "fourth"
+                fourthConnection.status = "active"
+                fourthConnection.baseUrlString = "https://secondConnectUrl.com"
+
+                ConnectionRepository.save(fourthConnection)
+
+                expect(Array(ConnectionsCollector.activeConnections(by: URL(string: "https://firstConnectUrl.com")!))).to(equal([firstConnection, thirdConnection]))
+                
+                expect(Array(ConnectionsCollector.activeConnections(by: URL(string: "https://secondConnectUrl.com")!))).to(equal([fourthConnection]))
+            }
+        }
+
+        describe("activeConnections(by providerId)") {
+            it("should return array only of active connections filtered by connect url") {
+                let providerId = "1"
+
+                let fifthConnection = Connection()
+                fifthConnection.id = "fifth"
+                fifthConnection.status = "active"
+                fifthConnection.providerId = providerId
+
+                ConnectionRepository.save(fifthConnection)
+
+                expect(Array(ConnectionsCollector.activeConnections(by: providerId))).to(equal([fifthConnection]))
+            }
+        }
+
         describe("where:") {
             it("should properly serialize the arguments into the Object.filter call") {
                 let whereString = "guid == '\(firstConnection.guid)'"
-                let expectedModel = ConnectionsCollector.allConnections.first!
                 let actualModel = ConnectionsCollector.where(whereString).first!
 
-                expect(expectedModel).to(equal(actualModel))
+                expect("first").to(equal(actualModel.id))
+                let actualModelId = ConnectionsCollector.where(whereString).first!.id
+
+                expect("first").to(equal(actualModelId))
             }
         }
 
         describe("connectionNames") {
             it("should return array of connection names") {
-                expect(ConnectionsCollector.connectionNames).to(equal(["First", "Second"]))
+                expect(Set(ConnectionsCollector.connectionNames)).to(equal(Set(["First", "Second"])))
             }
         }
 

@@ -21,55 +21,53 @@
 //
 
 import UIKit
-import TinyConstraints
-
-protocol ConnectionsViewControllerDelegate: class {
-    func selected(_ connection: Connection)
-    func addPressed()
-    func deleteAllPressed()
-}
 
 private struct Layout {
-    static let cellHeight: CGFloat = 86.0
+    static let cellHeight: CGFloat = 96.0
+    static let noDataViewTopOffset: CGFloat = AppLayout.screenHeight * 0.11
 }
 
-final class ConnectionsViewController: BaseViewController {
-    private let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.sectionHeaderHeight = 30.0
-        tableView.sectionFooterHeight = 0.0
-        tableView.backgroundColor = .auth_backgroundColor
-        tableView.register(ConnectionCell.self)
-        return tableView
-    }()
+final class ConnectionsViewController: UITableViewController {
     private var noDataView: NoDataView!
-    private var dataSource: ConnectionsDataSource!
+    private var viewModel: ConnectionsViewModel
 
-    weak var delegate: ConnectionsViewControllerDelegate?
+    var connectViewCoordinator: ConnectViewCoordinator?
+
+    init(viewModel: ConnectionsViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: .authenticator_main)
+        setupNoDataView()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadData()
+        viewModel.refreshConsents()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .backgroundColor
+        extendedLayoutIncludesOpaqueBars = true
         navigationItem.title = l10n(.connections)
-        view.backgroundColor = .auth_backgroundColor
-        setupDataSource()
         setupTableView()
-        noDataView = NoDataView(
-            image: #imageLiteral(resourceName: "NoBanks"),
-            title: l10n(.noConnections),
-            description: l10n(.noConnectionsDescription),
-            ctaTitle: l10n(.connect),
-            onCTAPress: {
-                self.addPressed()
-            }
-        )
+        setupRefreshControl()
         layout()
         updateViewsHiddenState()
-        updateNavigationButtonsState()
-        NotificationsHelper.observe(
-            self,
-            selector: #selector(reloadData),
-            name: NSLocale.currentLocaleDidChangeNotification,
-            object: nil
+        setupObservers()
+    }
+
+    @objc private func reloadData() {
+        tableView.reloadData()
+    }
+
+    func updateViewsHiddenState() {
+        tableView.reloadData()
+        UIView.animate(
+            withDuration: 0.3,
+            animations: {
+                self.noDataView.alpha = self.viewModel.hasDataToShow ? 0.0 : 1.0
+            }
         )
     }
 
@@ -77,107 +75,164 @@ final class ConnectionsViewController: BaseViewController {
         NotificationsHelper.removeObserver(self)
     }
 
-    @objc private func addPressed() {
-        delegate?.addPressed()
-    }
-
-    @objc private func deleteAllPressed() {
-        delegate?.deleteAllPressed()
-    }
-
-    @objc private func reloadData() {
-        tableView.reloadData()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
 // MARK: - Setup
 private extension ConnectionsViewController {
-    func setupDataSource() {
-        dataSource = ConnectionsDataSource(
-            onDataChange: { [weak self] in
-                guard let weakSelf = self else { return }
-
-                weakSelf.tableView.reloadData()
-                weakSelf.updateViewsHiddenState()
-                weakSelf.updateNavigationButtonsState()
-            }
+    func setupObservers() {
+        NotificationsHelper.observe(
+            self,
+            selector: #selector(reloadData),
+            name: NSLocale.currentLocaleDidChangeNotification,
+            object: nil
+        )
+        NotificationsHelper.observe(
+            self,
+            selector: #selector(reloadData),
+            name: .locationServicesStatusDidChange,
+            object: nil
         )
     }
-
     func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.sectionHeaderHeight = 0.0
+        tableView.sectionFooterHeight = 0.0
+        tableView.backgroundColor = .backgroundColor
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = UITableView.automaticDimension
+        tableView.register(ConnectionCell.self)
+        tableView.separatorStyle = .none
     }
 
-    func updateViewsHiddenState() {
-        UIView.animate(
-            withDuration: 0.3,
-            animations: {
-                self.noDataView.alpha = self.dataSource.hasDataToShow ? 0.0 : 1.0
-                self.tableView.alpha = !self.dataSource.hasDataToShow ? 0.0 : 1.0
-            }
-        )
+    func setupNoDataView() {
+        noDataView = NoDataView(data: viewModel.emptyViewData, action: viewModel.addPressed)
+        noDataView.alpha = viewModel.hasDataToShow ? 0 : 1
     }
 
-    func updateNavigationButtonsState() {
-        if dataSource.hasDataToShow {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(
-                title: l10n(.deleteAll),
-                style: .plain,
-                target: self,
-                action: #selector(deleteAllPressed)
-            )
-            navigationItem.rightBarButtonItem = UIBarButtonItem(
-                image: #imageLiteral(resourceName: "Add"),
-                style: .plain,
-                target: self,
-                action: #selector(addPressed)
-            )
-        } else {
-            navigationItem.leftBarButtonItem = nil
-            navigationItem.rightBarButtonItem = nil
-        }
+    func setupRefreshControl() {
+        tableView.refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
     }
 }
 
 // MARK: UITableViewDataSource
-extension ConnectionsViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+extension ConnectionsViewController {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Layout.cellHeight
     }
 
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return dataSource.sections
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.count
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource.rows(for: section)
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return dataSource.cell(for: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: ConnectionCell = tableView.dequeueReusableCell(for: indexPath)
+
+        let cellViewModel = viewModel.cellViewModel(at: indexPath)
+        cellViewModel.delegate = self
+        cell.viewModel = cellViewModel
+
+        return cell
     }
 }
 
 // MARK: UITableViewDelegate
-extension ConnectionsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+extension ConnectionsViewController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        guard let connection = dataSource.item(for: indexPath) else { return }
+        guard #available(iOS 13, *) else {
+            self.present(viewModel.actionSheet(for: indexPath), animated: true)
+            return
+        }
+    }
+}
 
-        delegate?.selected(connection)
+// MARK: UISwipeActionsConfiguration
+extension ConnectionsViewController {
+    override func tableView(_ tableView: UITableView,
+                            trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return viewModel.rightSwipeActionsConfiguration(for: indexPath)
+    }
+
+    override func tableView(_ tableView: UITableView,
+                            leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return viewModel.leftSwipeActionsConfiguration(for: indexPath)
+    }
+}
+
+// MARK: - Actions
+private extension ConnectionsViewController {
+    func showActionSheet(at indexPath: IndexPath) {}
+
+    @objc func refresh() {
+        viewModel.refreshConsents(
+            completion: {
+                DispatchQueue.main.async {
+                    self.refreshControl?.endRefreshing()
+                }
+            }
+        )
     }
 }
 
 // MARK: - Layout
 extension ConnectionsViewController: Layoutable {
     func layout() {
-        view.addSubviews(tableView, noDataView)
+        tableView.addSubview(noDataView)
 
-        tableView.edges(to: view)
-        noDataView.left(to: view, offset: AppLayout.sideOffset)
-        noDataView.right(to: view, offset: -AppLayout.sideOffset)
-        noDataView.center(in: view)
+        noDataView.topToSuperview(view.safeAreaLayoutGuide.topAnchor, offset: Layout.noDataViewTopOffset)
+        noDataView.widthToSuperview()
+    }
+}
+
+// MARK: - ConnectionCellEventsDelegate
+extension ConnectionsViewController: ConnectionCellEventsDelegate {
+    func renamePressed(id: String) {
+        viewModel.updateName(by: id)
+    }
+
+    func accessLocationPressed() {
+        if LocationManager.shared.notDeterminedAuthorization {
+            LocationManager.shared.requestLocationAuthorization()
+        } else {
+            showConfirmationAlert(
+                withTitle: l10n(.accessToLocationServices),
+                message: l10n(.turnOnLocationSharingDescription),
+                confirmActionTitle: l10n(.goToSettings),
+                confirmActionStyle: .default,
+                confirmAction: { _ in
+                    guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else { return }
+
+                    if UIApplication.shared.canOpenURL(settingsUrl) {
+                        UIApplication.shared.open(settingsUrl)
+                    }
+                }
+            )
+        }
+    }
+
+    func supportPressed(email: String) {
+        viewModel.showSupport(email: email)
+    }
+
+    func deletePressed(id: String, showConfirmation: Bool) {
+        viewModel.checkInternetAndRemoveConnection(id: id, showConfirmation: showConfirmation)
+    }
+
+    func reconnectPreseed(id: String) {
+        viewModel.reconnect(id: id)
+    }
+
+    func consentsPressed(id: String) {
+        viewModel.consentsPressed(connectionId: id)
     }
 }

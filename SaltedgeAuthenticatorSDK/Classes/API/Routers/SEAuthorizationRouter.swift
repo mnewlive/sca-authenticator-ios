@@ -21,12 +21,13 @@
 //
 
 import Foundation
+import SEAuthenticatorCore
 
 enum SEAuthorizationRouter: Routable {
-    case list(SEBaseAuthorizationData)
-    case getAuthorization(SEAuthorizationData)
-    case confirm(SEConfirmAuthorizationData)
-    case deny(SEConfirmAuthorizationData)
+    case list(SEBaseAuthenticatedRequestData)
+    case getAuthorization(SEBaseAuthenticatedWithIdRequestData)
+    case confirm(SEConfirmAuthorizationRequestData)
+    case deny(SEConfirmAuthorizationRequestData)
 
     var method: HTTPMethod {
         switch self {
@@ -45,47 +46,73 @@ enum SEAuthorizationRouter: Routable {
     var url: URL {
         switch self {
         case .list(let data):
-            return data.url.appendingPathComponent(SENetPaths.authorizations.path)
+            return data.url.appendingPathComponent(SENetPathBuilder(for: .authorizations).path)
         case .getAuthorization(let data):
-            return data.url.appendingPathComponent("\(SENetPaths.authorizations.path)/\(data.authorizationId)")
+            return data.url.appendingPathComponent("\(SENetPathBuilder(for: .authorizations).path)/\(data.entityId)")
         case .confirm(let data), .deny(let data):
-            return data.url.appendingPathComponent("\(SENetPaths.authorizations.path)/\(data.authorizationId)")
+            return data.url.appendingPathComponent("\(SENetPathBuilder(for: .authorizations).path)/\(data.entityId)")
         }
     }
 
     var headers: [String: String]? {
         switch self {
         case .list(let data):
+            let expiresAt = Date().addingTimeInterval(5.0 * 60.0).utcSeconds
+            
             let signature = SignatureHelper.signedPayload(
                 method: .get,
                 urlString: url.absoluteString,
                 guid: data.connectionGuid,
+                expiresAt: expiresAt,
                 params: parameters
             )
 
-            return Headers.signedRequestHeaders(token: data.accessToken, signature: signature, appLanguage: data.appLanguage)
+            return Headers.signedRequestHeaders(
+                token: data.accessToken,
+                expiresAt: expiresAt,
+                signature: signature,
+                appLanguage: data.appLanguage
+            )
         case .getAuthorization(let data):
+            let expiresAt = Date().addingTimeInterval(5.0 * 60.0).utcSeconds
+            
             let signature = SignatureHelper.signedPayload(
                 method: .get,
                 urlString: data.url.appendingPathComponent(
-                    "\(SENetPaths.authorizations.path)/\(data.authorizationId)"
+                    "\(SENetPathBuilder(for: .authorizations).path)/\(data.entityId)"
                     ).absoluteString,
                 guid: data.connectionGuid,
+                expiresAt: expiresAt,
                 params: parameters
             )
 
-            return Headers.signedRequestHeaders(token: data.accessToken, signature: signature, appLanguage: data.appLanguage)
+            return Headers.signedRequestHeaders(
+                token: data.accessToken,
+                expiresAt: expiresAt,
+                signature: signature,
+                appLanguage: data.appLanguage
+            )
         case .confirm(let data), .deny(let data):
+            let expiresAt = Date().addingTimeInterval(5.0 * 60.0).utcSeconds
+            
             let signature = SignatureHelper.signedPayload(
                 method: .put,
                 urlString: data.url.appendingPathComponent(
-                    "\(SENetPaths.authorizations.path)/\(data.authorizationId)"
+                    "\(SENetPathBuilder(for: .authorizations).path)/\(data.entityId)"
                     ).absoluteString,
                 guid: data.connectionGuid,
+                expiresAt: expiresAt,
                 params: parameters
             )
 
-            return Headers.signedRequestHeaders(token: data.accessToken, signature: signature, appLanguage: data.appLanguage)
+            return Headers.signedRequestHeaders(
+                token: data.accessToken,
+                expiresAt: expiresAt,
+                signature: signature,
+                appLanguage: data.appLanguage
+            )
+            .addLocationHeader(geolocation: data.geolocation)
+            .addAuthorizationTypeHeader(authorizationType: data.authorizationType)
         }
     }
 

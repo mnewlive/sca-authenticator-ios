@@ -30,11 +30,23 @@ struct ConnectionsCollector {
     }
 
     static var allConnections: Results<Connection> {
-        return RealmManager.defaultRealm.objects(Connection.self)
+        return RealmManager.defaultRealm.objects(Connection.self).sorted(byKeyPath: #keyPath(Connection.createdAt))
     }
 
     static var activeConnections: Results<Connection> {
         return self.where("\(#keyPath(Connection.status)) == %@", "active")
+            .sorted(
+                byKeyPath: #keyPath(Connection.createdAt),
+                ascending: true
+            )
+    }
+
+    static func activeConnections(by connectUrl: URL) -> [Connection] {
+        return Array(activeConnections).filter { $0.baseUrl == connectUrl }
+    }
+
+    static func activeConnections(by providerId: String) -> [Connection] {
+        return Array(activeConnections).filter { $0.providerId == providerId }
     }
 
     static var connectionNames: [String] {
@@ -45,7 +57,12 @@ struct ConnectionsCollector {
         return self.where("\(#keyPath(Connection.id)) == %@", id).first
     }
 
+    static func active(by id: String) -> Connection? {
+        return self.where("\(#keyPath(Connection.id)) == %@ AND \(#keyPath(Connection.status)) == %@", id, "active").first
+    }
+
     static func `where`(_ format: String, _ args: Any...) -> Results<Connection> {
         return ConnectionsCollector.allConnections.filter(NSPredicate(format: format, argumentArray: args))
+            .sorted(byKeyPath: #keyPath(Connection.createdAt))
     }
 }

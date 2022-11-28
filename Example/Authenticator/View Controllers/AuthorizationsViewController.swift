@@ -23,46 +23,126 @@
 import UIKit
 
 protocol AuthorizationsViewControllerDelegate: class {
-    func refreshPressed()
-    func selectedViewModel(at index: Int)
-    func denyPressed(at index: Int)
-    func confirmPressed(at index: Int, cell: AuthorizationCell)
-    func modalClosed()
+    func scanQrPressed()
+    func showMoreOptionsMenu()
+    func requestLocation()
+}
+
+private struct Layout {
+    static let navigationBarImageSize: CGSize = CGSize(width: 22.0, height: 22.0)
+    static let qrButtonRightOffset: CGFloat = -31.0
+    static let moreButtonRightOffset: CGFloat = -16.0
+    static let buttonBottomOffset: CGFloat = -15.0
+    static let noDataViewTopOffset: CGFloat = AppLayout.screenHeight * 0.11
 }
 
 final class AuthorizationsViewController: BaseViewController {
-    private let tableView = UITableView(frame: .zero, style: .grouped)
-    private let noDataView = NoDataView(
-        image: #imageLiteral(resourceName: "NoCodes"),
-        title: l10n(.noAuthorizations),
-        description: l10n(.noAuthorizationsDescription)
-    )
+    private let authorizationView = AuthorizationView()
+    private let moreButton = CustomNavigationBarButton()
+    private let qrButton = CustomNavigationBarButton()
     private var messageBarView: MessageBarView?
-
-    var dataSource: AuthorizationsDataSource?
+    private var noDataView: NoDataView?
 
     weak var delegate: AuthorizationsViewControllerDelegate?
 
+    var viewModel: AuthorizationsViewModel! {
+        didSet {
+            authorizationView.viewModel = viewModel
+            handleViewModelState()
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .auth_backgroundColor
-        setupNavigationItems()
-        setupTableView()
+        navigationItem.title = l10n(.authenticator)
         setupObservers()
+        setupNoDataView()
         layout()
-        noDataView.alpha = 1.0
     }
 
-    func reloadData() {
-        tableView.reloadData()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.setupPolling()
     }
 
-    @objc func refresh() {
-        delegate?.refreshPressed()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setupNavigationBarButtons()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel.stopPolling()
+        [moreButton, qrButton].forEach { $0.removeFromSuperview() }
+    }
+
+    private func handleViewModelState() {
+        viewModel.state.valueChanged = { [weak self] value in
+            guard let strongSelf = self else { return }
+
+            switch value {
+            case .changedConnectionsData:
+                strongSelf.noDataView?.updateContent(data: strongSelf.viewModel.emptyViewData)
+            case .reloadData:
+                strongSelf.authorizationView.reloadData()
+                strongSelf.updateViewsHiddenState()
+            case let .scrollTo(index):
+                strongSelf.authorizationView.scroll(to: index)
+            case let .presentFail(message):
+                strongSelf.present(message: message)
+            case let .scanQrPressed(success):
+                if success {
+                    strongSelf.delegate?.scanQrPressed()
+                } else {
+                    strongSelf.showConfirmationAlert(
+                        withTitle: l10n(.deniedCamera),
+                        message: l10n(.deniedCameraDescription),
+                        confirmActionTitle: l10n(.goToSettings),
+                        confirmActionStyle: .default,
+                        confirmAction: { _ in strongSelf.openPhoneSettings() }
+                    )
+                }
+            case .requestLocationWarning:
+                strongSelf.checkLocationServicesStatus()
+            default: break
+            }
+            strongSelf.viewModel.resetState()
+        }
+    }
+
+    private func checkLocationServicesStatus() {
+        if LocationManager.shared.notDeterminedAuthorization {
+            LocationManager.shared.requestLocationAuthorization()
+        } else if LocationManager.shared.geolocationSharingIsDenied {
+            showConfirmationAlert(
+                withTitle: l10n(.accessToLocationServices),
+                message: l10n(.turnOnLocationSharingDescription),
+                confirmActionTitle: l10n(.goToSettings),
+                confirmActionStyle: .default,
+                confirmAction: { _ in self.openPhoneSettings() }
+            )
+        } else {
+            showInfoAlert(
+                withTitle: l10n(.turnOnLocationServices),
+                message: l10n(.turnOnPhoneLocationServicesDescription)
+            )
+        }
+    }
+
+    private func openPhoneSettings() {
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else { return }
+
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl)
+        }
+    }
+
+    private func setupNoDataView() {
+        noDataView = NoDataView(data: viewModel.emptyViewData, action: scanQrPressed)
     }
 
     @objc private func hasNoConnection() {
-        messageBarView = present(message: l10n(.noInternetConnection), style: .warning, height: 60.0, hide: false)
+        messageBarView = present(message: l10n(.noInternetConnection), hide: false)
     }
 
     @objc private func hasConnection() {
@@ -71,30 +151,41 @@ final class AuthorizationsViewController: BaseViewController {
         }
     }
 
+    private func updateViewsHiddenState() {
+        UIView.animate(
+            withDuration: 0.3,
+            animations: { [weak self] in
+                guard let strongSelf = self else { return }
+
+                strongSelf.noDataView?.alpha = strongSelf.viewModel.hasDataToShow ? 0.0 : 1.0
+                strongSelf.authorizationView.alpha = !strongSelf.viewModel.hasDataToShow ? 0.0 : 1.0
+            }
+        )
+    }
+
     deinit {
         NotificationsHelper.removeObserver(self)
     }
 }
 
 // MARK: - Setup
-extension AuthorizationsViewController {
-    func setupNavigationItems() {
-        navigationItem.title = "Authorizations"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: #imageLiteral(resourceName: "Sync"),
-            style: .plain,
-            target: self,
-            action: #selector(refresh)
-        )
-    }
+private extension AuthorizationsViewController {
+    func setupNavigationBarButtons() {
+        moreButton.setImage(UIImage(named: "more"), for: .normal)
+        moreButton.addTarget(self, action: #selector(morePressed), for: .touchUpInside)
 
-    func setupTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.backgroundColor = .auth_backgroundColor
-        tableView.register(AuthorizationCell.self)
-        tableView.sectionHeaderHeight = 30.0
-        tableView.sectionFooterHeight = 0.0
+        qrButton.setImage(UIImage(named: "qr"), for: .normal)
+        qrButton.addTarget(self, action: #selector(scanQrPressed), for: .touchUpInside)
+
+        navigationController?.navigationBar.addSubviews(moreButton, qrButton)
+
+        qrButton.size(Layout.navigationBarImageSize)
+        qrButton.rightToLeft(of: moreButton, offset: Layout.qrButtonRightOffset)
+        qrButton.bottomToSuperview(offset: Layout.buttonBottomOffset)
+
+        moreButton.size(Layout.navigationBarImageSize)
+        moreButton.rightToSuperview(offset: Layout.moreButtonRightOffset)
+        moreButton.bottomToSuperview(offset: Layout.buttonBottomOffset)
     }
 
     func setupObservers() {
@@ -112,121 +203,45 @@ extension AuthorizationsViewController {
             object: nil
         )
     }
-
-    func updateViewsHiddenState() {
-        UIView.animate(
-            withDuration: 0.3,
-            animations: { [weak self] in
-                guard let dataSource = self?.dataSource else { return }
-
-                self?.noDataView.alpha = dataSource.hasDataToShow ? 0.0 : 1.0
-                self?.tableView.alpha = !dataSource.hasDataToShow ? 0.0 : 1.0
-            }
-        )
-    }
 }
 
 // MARK: - Actions
-extension AuthorizationsViewController {
+private extension AuthorizationsViewController {
+    @objc func scanQrPressed() {
+        viewModel.scanQrPressed()
+    }
+
+    @objc func morePressed() {
+        delegate?.showMoreOptionsMenu()
+    }
+
     func delete(section: Int) {
-        tableView.beginUpdates()
-        tableView.deleteSections([section], with: .fade)
-        tableView.endUpdates()
         updateViewsHiddenState()
-    }
-}
-
-// MARK: UITableViewDataSource
-extension AuthorizationsViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        guard let dataSource = self.dataSource else { return 0 }
-
-        return dataSource.sections
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let dataSource = self.dataSource else { return 0 }
-
-        return dataSource.rows(for: section)
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = dataSource?.cell(tableView: tableView, for: indexPath) else { return UITableViewCell() }
-
-        cell.selectionStyle = .none
-        cell.delegate = self
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return view.height * 0.7
-    }
-}
-
-// MARK: UITableViewDelegate
-extension AuthorizationsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-
-        guard let cell = tableView.cellForRow(at: indexPath) as? AuthorizationCell, cell.shouldShowPopup else { return }
-
-        delegate?.selectedViewModel(at: indexPath.section)
     }
 }
 
 // MARK: - Layout
 extension AuthorizationsViewController: Layoutable {
     func layout() {
-        view.addSubviews(tableView, noDataView)
-        tableView.edges(to: view)
-        noDataView.left(to: view, offset: AppLayout.sideOffset)
-        noDataView.right(to: view, offset: -AppLayout.sideOffset)
-        noDataView.centerY(to: view, offset: -AppLayout.tabBarHeight)
+        guard let noDataView = noDataView else { return }
+
+        view.addSubviews(authorizationView, noDataView)
+
+        authorizationView.edgesToSuperview()
+
+        noDataView.topToSuperview(offset: Layout.noDataViewTopOffset)
+        noDataView.widthToSuperview()
     }
 }
 
-// MARK: - AuthorizationCellDelegate
-extension AuthorizationsViewController: AuthorizationCellDelegate {
-    func leftButtonPressed(_ cell: AuthorizationCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-
-        cell.setProcessing(with: l10n(.processing))
-
-        delegate?.denyPressed(at: indexPath.section)
-    }
-
-    func rightButtonPressed(_ cell: AuthorizationCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
-
-        delegate?.confirmPressed(at: indexPath.section, cell: cell)
-    }
-
-    func timerExpired(_ cell: AuthorizationCell) {
-        guard let index = dataSource?.remove(cell.viewModel) else { return }
-
-        delete(section: index)
-    }
-
-    func viewMorePressed(_ cell: AuthorizationCell) {
-        guard let indexPath = tableView.indexPath(for: cell), cell.shouldShowPopup else { return }
-
-        delegate?.selectedViewModel(at: indexPath.section)
-    }
-}
-
-// MARK: - AuthorizationModalViewControllerDelegate
-extension AuthorizationsViewController: AuthorizationModalViewControllerDelegate {
-    func denyPressed() {}
-
-    func confirmPressed() {}
-
-    func buttonPressed(_ viewModel: AuthorizationViewModel) {
-        guard let index = dataSource?.remove(viewModel) else { return }
-
-        delete(section: index)
-    }
-
-    func willBeClosed() {
-        delegate?.modalClosed()
+private class CustomNavigationBarButton: UIButton {
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        let newArea = CGRect(
+            x: bounds.origin.x - 5.0,
+            y: bounds.origin.y - 5.0,
+            width: bounds.size.width + 10.0,
+            height: bounds.size.height + 20.0
+        )
+        return newArea.contains(point)
     }
 }

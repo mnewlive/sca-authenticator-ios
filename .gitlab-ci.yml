@@ -34,3 +34,4 @@ cache:
 
 test:
     script: BUILD_TYPE=partial sh .ci.sh
+

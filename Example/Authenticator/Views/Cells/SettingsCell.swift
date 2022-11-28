@@ -22,84 +22,37 @@
 
 import UIKit
 
-enum SettingsCellType: Localizable {
-    case language
-    case passcode
-    case biometrics
-    case appVersion
-    case terms
-    case support
-    case about
-
-    var localizedLabel: String {
-        switch self {
-        case .language: return l10n(.language)
-        case .passcode: return l10n(.passcode)
-        case .biometrics: return BiometricsPresenter.biometricTypeText
-        case .appVersion: return l10n(.applicationVersion)
-        case .terms: return l10n(.terms)
-        case .support: return l10n(.reportABug)
-        case .about: return l10n(.about)
-        }
-    }
-
-    var detailString: String? {
-        switch self {
-        case .language: return LocalizationHelper.languageDisplayName(from: UserDefaultsHelper.applicationLanguage)
-        case .appVersion: return AppSettings.versionAndBuildNumber
-        default: return nil
-        }
-    }
-}
-
 final class SettingsCell: UITableViewCell, Dequeuable {
-
-    private var biometricsSwitch: UISwitch {
-        let toggler = UISwitch()
-        toggler.addTarget(self, action: #selector(toggleBiometricsState(_:)), for: .valueChanged)
-        toggler.onTintColor = .auth_blue
-        toggler.isOn = PasscodeManager.isBiometricsEnabled
-        return toggler
-    }
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value1, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .backgroundColor
+        selectedBackgroundView = selectedBackgroundСolorView
+        textLabel?.textColor = .titleColor
+        textLabel?.font = .auth_17regular
+        detailTextLabel?.textColor = .titleColor
+        detailTextLabel?.font = .auth_13regular
+        contentView.tintColor = .extraLightGray
     }
 
-    func set(with item: SettingsCellType) {
+    func set(with item: SettingCellModel) {
+        imageView?.image = item.icon
         textLabel?.text = item.localizedLabel
         if let detailsText = item.detailString {
             detailTextLabel?.text = detailsText
         }
-
         switch item {
-        case .language:
-            accessoryType = .disclosureIndicator
-            detailTextLabel?.centerY(to: contentView)
-            detailTextLabel?.right(to: contentView, offset: -10.0)
-        case .passcode,
-             .about: accessoryType = .disclosureIndicator
-        case .biometrics: accessoryView = biometricsSwitch
-        case .terms, .support: textLabel?.textColor = .auth_blue
+        case .clearData: textLabel?.textColor = .redAlert
         default: break
         }
+    }
+    
+    private var selectedBackgroundСolorView: UIView {
+        let bgColorView = UIView()
+        bgColorView.backgroundColor = .selectedColor
+        return bgColorView
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    @objc func toggleBiometricsState(_ toggler: UISwitch) {
-        if BiometricsHelper.biometryType == .none {
-            guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
-                return
-            }
-
-            if UIApplication.shared.canOpenURL(settingsUrl) {
-                UIApplication.shared.open(settingsUrl)
-            }
-        } else {
-            PasscodeManager.isBiometricsEnabled = toggler.isOn
-        }
     }
 }

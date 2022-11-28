@@ -22,85 +22,106 @@ import UIKit
 import UserNotifications
 import Firebase
 import SEAuthenticator
+import SEAuthenticatorCore
 
-@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     var window: UIWindow?
-
-    var tabBarViewController: MainTabBarViewController? {
-        if let tabBar = self.window?.rootViewController as? MainTabBarViewController {
-            return tabBar
-        }
-        return nil
-    }
 
     var applicationCoordinator: ApplicationCoordinator?
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        self.window = window
+        self.window = UIWindow(frame: UIScreen.main.bounds)
         UNUserNotificationCenter.current().delegate = self
-        ReachabilityManager.shared.observeReachability()
+        ConnectivityManager.shared.observeReachability()
         AppearanceHelper.setup()
+        CacheHelper.setDefaultDiskAge()
         configureFirebase()
+        LocationManager.shared.startUpdatingLocation()
         setupAppCoordinator()
         return true
     }
 
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        if UserDefaultsHelper.didShowOnboarding {
+            applicationCoordinator?.registerTimerNotifications()
+        }
+        QuickActionsHelper.setupActions()
+    }
+
+    func applicationWillResignActive(_ application: UIApplication) {
+        TimerApplication.resetIdleTimer()
+        applicationCoordinator?.disableTimerNotifications()
+    }
+
     private func configureFirebase() {
-        if let configFile = Bundle.authenticator_main.path(forResource: "GoogleService-Info", ofType: "plist"),
-            let options = FirebaseOptions(contentsOfFile: configFile) {
-            FirebaseApp.configure(options: options)
+        FirebaseApp.configure()
+        if Bundle.authenticator_main.path(forResource: "GoogleService-Info", ofType: "plist") != nil,
+           FirebaseApp.app() == nil {
+            FirebaseApp.configure()
         } else {
-            print("For using Crashlytics make sure you have GoogleService-Info.plist set.")
+            Log.debugLog(message: "For using Crashlytics make sure you have GoogleService-Info.plist set.")
         }
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+        TimerApplication.resetIdleTimer()
+        applicationCoordinator?.disableTimerNotifications()
         applicationCoordinator?.openPasscodeIfNeeded()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
+        if UserDefaultsHelper.didShowOnboarding {
+            applicationCoordinator?.registerTimerNotifications()
+        }
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
         applicationCoordinator?.showBiometricsIfEnabled()
+        applicationCoordinator?.openQrScannerIfNoConnections()
     }
 
     static var main: AppDelegate {
         return UIApplication.appDelegate
     }
 
-    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-        var parameters: [String: String] = [:]
-        URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.forEach {
-            parameters[$0.name] = $0.value
-        }
-
-        guard let configuration = parameters[SENetKeys.configuration] else { return false }
+    func application(_ application: UIApplication,
+                     open url: URL,
+                     sourceApplication: String?, annotation: Any) -> Bool {
+        guard SEConnectHelper.isValid(deepLinkUrl: url) else { return false }
 
         if UIWindow.topViewController is PasscodeViewController {
-            applicationCoordinator?.openConnectViewController(urlString: configuration)
+            applicationCoordinator?.openConnectViewController(url: url)
         }
         return true
     }
 
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        let deviceTokenString = deviceToken.reduce("", { $0 + String(format: "%02X", $1) })
+    func application(_ application: UIApplication,
+                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let deviceTokenString = deviceToken.map { String(format: "%02x", $0) }.joined()
+
         UserDefaultsHelper.pushToken = deviceTokenString
     }
 
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print(error.localizedDescription)
+    func application(_ application: UIApplication,
+                     didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        Log.debugLog(message: error.localizedDescription)
+    }
+
+    func application(_ application: UIApplication,
+                     performActionFor shortcutItem: UIApplicationShortcutItem,
+                     completionHandler: @escaping (Bool) -> Void) {
+        if AVCaptureHelper.cameraIsAuthorized(), shortcutItem.type == QuickActionsType.openCamera.rawValue {
+            applicationCoordinator?.openQrScanner()
+            completionHandler(true)
+        }
     }
 
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        let userInfo = response.notification.request.content.userInfo
-
-        guard let apsDict = userInfo[SENetKeys.aps] as? [String: Any],
-            let dataDict = apsDict[SENetKeys.data] as? [String: Any],
-            let connectionId = dataDict[SENetKeys.connectionId] as? String,
-            let authorizationId = dataDict[SENetKeys.authorizationId] as? String else { completionHandler(); return }
+        guard let (connectionId, authorizationId) = extractIds(from: response.notification.request) else {
+            completionHandler()
+            return
+        }
 
         if UIWindow.topViewController is PasscodeViewController {
             applicationCoordinator?.handleAuthorizationsFromPasscode(connectionId: connectionId, authorizationId: authorizationId)
@@ -112,7 +133,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.badge, .alert, .sound])
+        guard let (connectionId, _) = extractIds(from: notification.request) else { return }
+
+        if ConnectionsCollector.active(by: connectionId) != nil {
+            completionHandler([.badge, .alert, .sound])
+        }
     }
 
     func showApplicationResetPopup() {
@@ -129,5 +154,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         applicationCoordinator?.start()
         applicationCoordinator?.openPasscodeIfNeeded()
         applicationCoordinator?.showBiometricsIfEnabled()
+        applicationCoordinator?.openQrScannerIfNoConnections()
+    }
+
+    private func extractIds(from request: UNNotificationRequest) -> (String, String)? {
+        let userInfo = request.content.userInfo
+
+        guard let apsDict = userInfo[SENetKeys.aps] as? [String: Any],
+              let dataDict = apsDict[SENetKeys.data] as? [String: Any] else { return nil }
+
+        // NOTE: connection_id and authorization_id from v1 are strings, from v2 - ints
+            if let connectionId = dataDict[SENetKeys.connectionId] as? String,
+               let authorizationId = dataDict[SENetKeys.authorizationId] as? String {
+                return (connectionId, authorizationId)
+            } else if let connectionId = dataDict[SENetKeys.connectionId] as? Int,
+                      let authorizationId = dataDict[SENetKeys.authorizationId] as? Int {
+                return ("\(connectionId)", "\(authorizationId)")
+            } else {
+                return nil
+            }
     }
 }

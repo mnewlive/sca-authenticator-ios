@@ -21,51 +21,66 @@
 //
 
 import Foundation
+import SEAuthenticatorCore
 
 enum SEConnectionRouter: Routable {
-    case getConnectUrl(URL, SEConnectionData, PushToken, ApplicationLanguage)
-    case revoke(URL, SERevokeConnectionData, ApplicationLanguage)
+    case createConnection(URL, SECreateConnectionRequestData, PushToken, ConnectQuery?, ApplicationLanguage)
+    case revoke(SEBaseAuthenticatedWithIdRequestData)
 
     var method: HTTPMethod {
         switch self {
-        case .getConnectUrl: return .post
+        case .createConnection: return .post
         case .revoke: return .delete
         }
     }
 
     var encoding: Encoding {
         switch self {
-        case .getConnectUrl: return .json
+        case .createConnection: return .json
         case .revoke: return .url
         }
     }
 
     var url: URL {
         switch self {
-        case .getConnectUrl(let url, _, _, _): return url
-        case .revoke(let url, _, _): return url.appendingPathComponent("\(SENetPaths.connections.path)")
+        case .createConnection(let url, _, _, _, _):
+            return url.appendingPathComponent(SENetPathBuilder(for: .connections).path)
+        case .revoke(let data):
+            return data.url.appendingPathComponent(SENetPathBuilder(for: .connections).path)
         }
     }
 
     var headers: [String: String]? {
         switch self {
-        case .getConnectUrl(_, _, _, let appLanguage): return Headers.requestHeaders(with: appLanguage)
-        case .revoke(_, let data, let appLanguage):
+        case .createConnection(_, _, _, _, let appLanguage): return Headers.requestHeaders(with: appLanguage)
+        case .revoke(let data):
+            let expiresAt = Date().addingTimeInterval(5.0 * 60.0).utcSeconds
+            
             let signature = SignatureHelper.signedPayload(
                 method: .delete,
                 urlString: url.absoluteString,
-                guid: data.guid,
+                guid: data.connectionGuid,
+                expiresAt: expiresAt,
                 params: parameters
             )
 
-            return Headers.signedRequestHeaders(token: data.token, signature: signature, appLanguage: appLanguage)
+            return Headers.signedRequestHeaders(
+                token: data.accessToken,
+                expiresAt: expiresAt,
+                signature: signature,
+                appLanguage: data.appLanguage
+            )
         }
     }
 
     var parameters: [String: Any]? {
         switch self {
-        case .getConnectUrl(_, let data, let pushToken, _):
-            return RequestParametersBuilder.parameters(for: data, pushToken: pushToken)
+        case .createConnection(_, let data, let pushToken, let connectQuery, _):
+            return RequestParametersBuilder.parameters(
+                for: data,
+                pushToken: pushToken,
+                connectQuery: connectQuery
+            )
         case .revoke: return nil
         }
     }

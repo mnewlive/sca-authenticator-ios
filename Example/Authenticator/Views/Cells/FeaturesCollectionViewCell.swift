@@ -24,22 +24,36 @@ import UIKit
 import TinyConstraints
 
 private struct Layout {
-    static let topImageViewOffset: CGFloat = 106.0
-    static let imageViewSize: CGSize = CGSize(width: 180.0, height: 180.0)
-    static let titleLabelTopOffset: CGFloat = 30.0
-    static let descriptionLabelTopOffset: CGFloat = 17.0
+    static let imageViewTopOffset: CGFloat = 58.0
+    static let imageViewSideOffset: CGFloat = 16.0
+    static let imageViewHeight: CGFloat = AppLayout.screenHeight * 0.307
+
+    static let titleLabelTopOffset: CGFloat = 78.0
+    static let titleLabelSideOffset: CGFloat = 32.0
+
+    static let descriptionLabelTopOffset: CGFloat = 20.0
+    static let descriptionLabelSideOffset: CGFloat = 32.0
 }
 
 final class FeaturesCollectionViewCell: UICollectionViewCell {
     static var reuseIdentifier: String = "FeaturesCollectionViewCell"
 
     private let imageView = UIImageView(frame: .zero)
-    private let titleLabel = UILabel.titleLabel
-    private let descriptionLabel = UILabel.descriptionLabel
+    private let titleLabel = UILabel()
+    private let descriptionLabel = UILabel()
+    private let pageControl = UIPageControl()
+
+    var viewModel: OnboardingCellViewModel! {
+        didSet {
+            imageView.image = viewModel.image
+            titleLabel.text = viewModel.title
+            descriptionLabel.text = viewModel.description
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
+        backgroundColor = .backgroundColor
         layout()
         stylize()
     }
@@ -60,25 +74,34 @@ extension FeaturesCollectionViewCell: Layoutable {
     func layout() {
         addSubviews(imageView, titleLabel, descriptionLabel)
 
-        imageView.centerX(to: contentView)
-        imageView.top(to: contentView, offset: Layout.topImageViewOffset)
-        imageView.size(Layout.imageViewSize)
+        imageView.top(to: self, offset: Layout.imageViewTopOffset)
+        imageView.left(to: self, offset: Layout.imageViewSideOffset)
+        imageView.right(to: self, offset: -Layout.imageViewSideOffset)
+        imageView.height(Layout.imageViewHeight)
 
         titleLabel.topToBottom(of: imageView, offset: Layout.titleLabelTopOffset)
-        titleLabel.centerX(to: contentView)
-        titleLabel.left(to: contentView, offset: AppLayout.sideOffset)
-        titleLabel.right(to: contentView, offset: -AppLayout.sideOffset)
+        titleLabel.left(to: self, offset: Layout.titleLabelSideOffset)
+        titleLabel.centerX(to: self)
 
         descriptionLabel.topToBottom(of: titleLabel, offset: Layout.descriptionLabelTopOffset)
-        descriptionLabel.centerX(to: contentView)
-        descriptionLabel.left(to: contentView, offset: AppLayout.sideOffset)
-        descriptionLabel.right(to: contentView, offset: -AppLayout.sideOffset)
+        descriptionLabel.left(to: self, offset: Layout.descriptionLabelSideOffset)
+        descriptionLabel.right(to: self, offset: -Layout.descriptionLabelSideOffset)
+        descriptionLabel.centerX(to: self)
     }
 }
 
 // MARK: - Styleable
 extension FeaturesCollectionViewCell: Styleable {
     func stylize() {
+        titleLabel.font = .systemFont(ofSize: 26.0, weight: .semibold)
+        titleLabel.textAlignment = .left
+        titleLabel.textColor = .titleColor
+
+        descriptionLabel.font = .systemFont(ofSize: 17.0, weight: .regular)
+        descriptionLabel.textAlignment = .left
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.textColor = .titleColor
+
         imageView.contentMode = .scaleAspectFit
     }
 }

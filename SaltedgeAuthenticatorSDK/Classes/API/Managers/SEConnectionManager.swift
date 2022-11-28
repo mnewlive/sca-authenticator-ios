@@ -21,29 +21,33 @@
 //
 
 import Foundation
+import SEAuthenticatorCore
 
 public struct SEConnectionManager {
-    public static func getConnectUrl(by url: URL,
-                                     data: SEConnectionData,
-                                     pushToken: PushToken,
-                                     appLanguage: ApplicationLanguage,
-                                     onSuccess success: @escaping HTTPServiceSuccessClosure<SECreateConnectionResponse>,
-                                     onFailure failure: @escaping FailureBlock) {
-        HTTPService<SECreateConnectionResponse>.execute(
-            request: SEConnectionRouter.getConnectUrl(url, data, pushToken, appLanguage),
-            success: success,
+    public static func createConnection(
+        by url: URL,
+        data: SECreateConnectionRequestData,
+        pushToken: PushToken,
+        connectQuery: ConnectQuery? = nil,
+        appLanguage: ApplicationLanguage,
+        onSuccess success: SEHTTPResponse<SECreateConnectionResponse>,
+        onFailure failure: @escaping FailureBlock
+    ) {
+        HTTPService<SECreateConnectionResponse>.makeRequest(
+            SEConnectionRouter.createConnection(url, data, pushToken, connectQuery, appLanguage),
+            completion: success,
             failure: failure
         )
     }
 
-    public static func revokeConnection(by url: URL,
-                                        data: SERevokeConnectionData,
-                                        appLanguage: ApplicationLanguage,
-                                        onSuccess success: @escaping HTTPServiceSuccessClosure<SERevokeConnectionResponse>,
-                                        onFailure failure: @escaping FailureBlock) {
-        HTTPService<SERevokeConnectionResponse>.execute(
-            request: SEConnectionRouter.revoke(url, data, appLanguage),
-            success: success,
+    public static func revokeConnection(
+        data: SEBaseAuthenticatedWithIdRequestData,
+        onSuccess success: SEHTTPResponse<SERevokeConnectionResponse>,
+        onFailure failure: @escaping FailureBlock
+    ) {
+        HTTPService<SERevokeConnectionResponse>.makeRequest(
+            SEConnectionRouter.revoke(data),
+            completion: success,
             failure: failure
         )
     }

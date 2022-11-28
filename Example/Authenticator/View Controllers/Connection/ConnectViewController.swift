@@ -21,19 +21,32 @@
 //
 
 import UIKit
-import TinyConstraints
-
-enum ConnectionType {
-    case connect
-    case reconnect
-    case deepLink
-}
 
 final class ConnectViewController: BaseViewController {
+    private lazy var completeView = CompleteView(state: .processing, title: l10n(.processing))
+    private let viewModel = ConnectViewModel(reachabilityManager: ConnectivityManager.shared)
+
+    var shouldDismiss: (() ->())?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = l10n(.connect)
+        viewModel.checkInternetConnection()
         setupCancelButton()
+        layout()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        shouldDismiss?()
+    }
+}
+
+// MARK: - Layout
+extension ConnectViewController: Layoutable {
+    func layout() {
+        view.addSubview(completeView)
+
+        completeView.edgesToSuperview()
     }
 }
 
@@ -44,43 +57,46 @@ private extension ConnectViewController {
             title: l10n(.cancel),
             style: .plain,
             target: self,
-            action: #selector(close)
+            action: #selector(cancelPressed)
         )
+    }
+
+    @objc func cancelPressed() {
+        dismiss(animated: true, completion: shouldDismiss)
     }
 }
 
 // MARK: - Actions
 extension ConnectViewController {
-    @objc func close() {
-        dismiss(animated: true, completion: nil)
-    }
-
-    func showCompleteView(with state: CompleteView.State,
-                          title: String,
-                          description: String = l10n(.connectedSuccessfullyDescription),
-                          completion: (() -> ())? = nil) {
-        let completeView = CompleteView(state: state, title: title, description: description)
+    func showCompleteView(
+        with state: CompleteView.State,
+        title: String,
+        attributedTitle: NSMutableAttributedString? = nil,
+        description: String = l10n(.connectedSuccessfullyDescription),
+        completion: (() -> ())? = nil
+    ) {
+        completeView.set(state: state, title: title, attributedString: attributedTitle, description: description)
         completeView.proceedClosure = completion
         completeView.delegate = self
-        completeView.alpha = 0.0
-
-        view.addSubview(completeView)
-        completeView.edges(to: view)
-        view.layoutIfNeeded()
-
-        UIView.animate(withDuration: 0.3) {
-            completeView.alpha = 1.0
-        }
+        completeView.alpha = 1.0
     }
 }
 
 // MARK: - CompleteViewDelegate
 extension ConnectViewController: CompleteViewDelegate {
     func proceedPressed(for view: CompleteView) {
-        dismiss(animated: true, completion: nil)
+        cancelPressed()
     }
+}
 
-    func reportAProblemPressed(for view: CompleteView) {
-        showSupportMailComposer()
+// MARK: - ConnectViewModelEventsDelegate
+extension ConnectViewController: ConnectViewModelEventsDelegate {
+    func showNoInternetConnectionAlert() {
+        showInfoAlert(
+            withTitle: l10n(.noInternetConnection),
+            message: l10n(.pleaseTryAgain),
+            actionTitle: l10n(.ok),
+            completion: { self.cancelPressed() }
+        )
     }
 }

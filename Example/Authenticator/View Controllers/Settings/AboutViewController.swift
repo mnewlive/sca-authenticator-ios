@@ -23,23 +23,32 @@
 import UIKit
 import TinyConstraints
 
-protocol AboutViewControllerDelegate: class {
-    func selected(_ item: SettingsCellType, indexPath: IndexPath)
-}
-
 private struct Layout {
     static let footerHeight: CGFloat = 60.0
 }
 
 final class AboutViewController: BaseViewController {
     private let tableView = UITableView(frame: .zero, style: .grouped)
-    private var dataSource: AboutDataSource
+    private let footerViewLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .backgroundColor
+        label.text = l10n(.copyrightDescription)
+        label.font = .systemFont(ofSize: 15.0)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        label.textColor = .titleColor
+        label.textAlignment = .center
+        return label
+    }()
+    private var viewModel: AboutViewModel
 
-    weak var delegate: AboutViewControllerDelegate?
-
-    init(dataSource: AboutDataSource) {
-        self.dataSource = dataSource
+    init(viewModel: AboutViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: .authenticator_main)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -47,19 +56,6 @@ final class AboutViewController: BaseViewController {
         navigationItem.title = l10n(.about)
         setupTableView()
         layout()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableView.reloadData()
-    }
-
-    func reloadData() {
-        tableView.reloadData()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 
@@ -70,7 +66,8 @@ private extension AboutViewController {
         tableView.dataSource = self
         tableView.sectionHeaderHeight = 30.0
         tableView.sectionFooterHeight = 0.0
-        tableView.backgroundColor = .auth_backgroundColor
+        tableView.backgroundColor = .backgroundColor
+        tableView.separatorStyle = .none
         tableView.register(SettingsCell.self)
     }
 }
@@ -82,38 +79,19 @@ extension AboutViewController: UITableViewDataSource {
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return dataSource.sections
+        return viewModel.sections
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource.rows(for: section)
+        return viewModel.rows(for: section)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let item = viewModel.item(for: indexPath) else { return UITableViewCell() }
+
         let cell: SettingsCell = tableView.dequeueReusableCell(for: indexPath)
-
-        guard let item = dataSource.item(for: indexPath) else { return UITableViewCell() }
-
         cell.set(with: item)
         return cell
-    }
-
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = UILabel(
-            frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: AppLayout.cellDefaultHeight)
-        )
-        footerView.backgroundColor = .auth_backgroundColor
-        footerView.text = l10n(.copyrightDescription)
-        footerView.font = .auth_15regular
-        footerView.numberOfLines = 0
-        footerView.lineBreakMode = .byWordWrapping
-        footerView.textColor = .auth_darkGray
-        footerView.textAlignment = .center
-        return footerView
-    }
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return Layout.footerHeight
     }
 }
 
@@ -121,18 +99,19 @@ extension AboutViewController: UITableViewDataSource {
 extension AboutViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
-        guard let item = dataSource.item(for: indexPath) else { return }
-
-        delegate?.selected(item, indexPath: indexPath)
+        viewModel.selected(indexPath: indexPath)
     }
 }
 
 // MARK: - Layout
 extension AboutViewController: Layoutable {
     func layout() {
-        view.addSubview(tableView)
+        view.addSubviews(tableView, footerViewLabel)
 
         tableView.edges(to: view)
+
+        footerViewLabel.height(AppLayout.cellDefaultHeight)
+        footerViewLabel.widthToSuperview()
+        footerViewLabel.bottom(to: view, view.safeAreaLayoutGuide.bottomAnchor, offset: -16.0)
     }
 }

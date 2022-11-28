@@ -21,6 +21,7 @@
 //
 
 import Foundation
+import SEAuthenticatorCore
 
 struct ParametersKeys {
     static let data = "data"
@@ -30,20 +31,22 @@ struct ParametersKeys {
     static let platform = "platform"
     static let pushToken = "push_token"
     static let returnUrl = "return_url"
+    static let connectQuery = "connect_query"
     static let confirm = "confirm"
     static let authorizationCode = "authorization_code"
     static let credentials = "credentials"
 }
 
 struct RequestParametersBuilder {
-    static func parameters(for connectionData: SEConnectionData, pushToken: PushToken) -> [String: Any] {
+    static func parameters(for connectionData: SECreateConnectionRequestData, pushToken: PushToken, connectQuery: String?) -> [String: Any] {
         return [
             ParametersKeys.data: [
                 ParametersKeys.providerCode: connectionData.providerCode,
                 ParametersKeys.publicKey: connectionData.publicKey,
                 ParametersKeys.returnUrl: SENetConstants.oauthRedirectUrl,
                 ParametersKeys.platform: "ios",
-                ParametersKeys.pushToken: pushToken
+                ParametersKeys.pushToken: pushToken,
+                ParametersKeys.connectQuery: connectQuery
             ]
         ]
     }

@@ -1,4 +1,7 @@
+[![Build Status](https://travis-ci.org/saltedge/sca-authenticator-ios.svg?branch=master)](https://travis-ci.org/saltedge/sca-authenticator-ios)
+[![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SaltedgeAuthenticatorSDK.svg?style=flat)](https://img.shields.io/cocoapods/v/SaltedgeAuthenticatorSDK.svg?style=flat)
 [![GPLv3 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
+[![Gitter](https://badges.gitter.im/Salt-Edge/authenticator.svg)](https://gitter.im/Salt-Edge/authenticator?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/fold_left.svg?style=social&label=Follow%20%40saltedge)](http://twitter.com/saltedge)
 
 <br />
@@ -31,25 +34,38 @@ You can download mobile application:
 ## Source code
 
 You can find related source code: 
-* [Authenticator Identity Service](https://github.com/saltedge/sca-identity-service-example);
+* [Authenticator Identity Service](https://github.com/saltedge/sca-identity-service-example)
 * [Authenticator Android app](https://github.com/saltedge/sca-authenticator-android).
 
 ## How it works
 
-* [Authenticator iOS SDK readme](docs/SDK_README.md)
-* [Authenticator iOS app workflow](docs/WORKFLOW.md)
-* [Authenticator Identity Service Wiki](https://github.com/saltedge/sca-identity-service-example/wiki)
-* [Authenticator Identity Service API](https://github.com/saltedge/sca-identity-service-example/blob/master/docs/IDENTITY_SERVICE_API.md)
+* ### [Authenticator iOS SDK](SaltedgeAuthenticatorSDK/README.md)
+* ### [Authenticator iOS SDK v2](SaltedgeAuthenticatorSDKv2/README.md)
+* ### [Authenticator iOS app workflow](docs/WORKFLOW.md)
+* ### [Authenticator Identity Service Wiki](https://github.com/saltedge/sca-identity-service-example/wiki)
+* ### [Authenticator Identity Service API](https://github.com/saltedge/sca-identity-service-example/blob/master/docs/IDENTITY_SERVICE_API.md)
 
 ## Prerequisites
 
-* Xcode 10.2
+* Xcode 12.2
 * iOS 10.0+
 * Swift 5+
 * swiftlint
   ```bash
   brew install swiftlint
   ```
+  
+## SDK installation via [CocoaPods](https://cocoapods.org)
+  
+#### Add the pod to your `Podfile`
+  
+  ```ruby
+  pod 'SaltedgeAuthenticatorSDK', '~> 1.1.1'
+  ```
+  
+#### Import SDK into your app
+  
+  `import SEAuthenticator`
 
 ## How to build locally
 
@@ -59,9 +75,16 @@ or build from source code.
 1. Fork this repository
 1. Open terminal
 1. Move to project directory `sca-authenticator-ios/Example`
-1. Command in terminal: `gem install cocoapods`
-1. Command in terminal: `pod install`
-1. Open project's workspace in Xcode
+1. Command in terminal: `bundle install` (To install all required gems)
+1. Command in terminal: `pod install` (To install all required pods)
+
+    If `pod install` fails on M1 Macs, do next: 
+    ```
+    sudo arch -x86_64 gem install ffi
+    arch -x86_64 pod update
+    ```
+    Also make sure you set the `arm64` values in the "Build Settings" -> "Architectures" -> "Excluded Architectures". 
+1. Open project's workspace file in Xcode (`Example/Authenticator.xcworkspace`)
 1. Create `application.plist` configuration file using `application.example.plist`
 1. If you have intent to use Firebase Crashlytics then generate `GoogleService-info.plist` and add it to project.
 1. Build and run application on target device or simulator
@@ -76,7 +99,7 @@ In the spirit of [free software][free-sw], **everyone** is encouraged to help [i
 
 ## Contact us
 
-Feel free to [contact us](mailto:authenticator@saltedge.com)
+Feel free to [contact us](https://www.saltedge.com/pages/contact_support)
 
 ## License
 

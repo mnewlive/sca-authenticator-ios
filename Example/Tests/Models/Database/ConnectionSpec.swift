@@ -48,5 +48,37 @@ class ConnectionSpec: BaseSpec {
                 expect(connection.logoUrl).to(equal(URL(string: "test.com")))
             }
         }
+        
+        describe("isManaged") {
+            it("should return true if object is stored in Db") {
+                let connection = Connection()
+                
+                expect(connection.isManaged).to(beFalse())
+                
+                ConnectionRepository.save(connection)
+                
+                expect(connection.isManaged).to(beTrue())
+            }
+        }
+
+        describe("isApiV2") {
+            it("should return true if apiVersion value is 2") {
+                let connection = Connection()
+
+                expect(connection.isApiV2).to(beFalse())
+
+                connection.apiVersion = "2"
+
+                expect(connection.isApiV2).to(beTrue())
+            }
+        }
+
+        describe("providerPublicKeyTag") {
+            it("should return connection's provider public key tag") {
+                let connection = Connection()
+
+                expect("\(connection.guid)_provider_public_key").to(equal(connection.providerPublicKeyTag))
+            }
+        }
     }
 }
