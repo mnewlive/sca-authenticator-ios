@@ -116,16 +116,16 @@ final class AuthorizationsViewModel {
             AuthorizationsInteractor.confirm(
                 apiVersion: detailViewModel.apiVersion,
                 data: data,
-                successV1: {
-                    self.update(viewModel: detailViewModel, state: .confirmed)
+                successV1: { [weak self] in
+                    self?.update(viewModel: detailViewModel, state: .confirmed)
                 },
-                successV2: { response in
+                successV2: { [weak self] response in
                     if response.status.isFinal {
-                        self.update(viewModel: detailViewModel, state: .confirmed)
+                        self?.update(viewModel: detailViewModel, state: .confirmed)
                     }
                 },
-                failure: { _ in
-                    self.update(viewModel: detailViewModel, state: .error)
+                failure: { [weak self] _ in
+                    self?.update(viewModel: detailViewModel, state: .error)
                 }
             )
         }
@@ -143,16 +143,16 @@ final class AuthorizationsViewModel {
             AuthorizationsInteractor.deny(
                 apiVersion: detailViewModel.apiVersion,
                 data: data,
-                successV1: {
-                    self.update(viewModel: detailViewModel, state: .denied)
+                successV1: { [weak self] in
+                    self?.update(viewModel: detailViewModel, state: .denied)
                 },
-                successV2: { response in
+                successV2: { [weak self] response in
                     if response.status.isFinal {
-                        self.update(viewModel: detailViewModel, state: .denied)
+                        self?.update(viewModel: detailViewModel, state: .denied)
                     }
                 },
-                failure: { _ in
-                    self.update(viewModel: detailViewModel, state: .error)
+                failure: { [weak self] _ in
+                    self?.update(viewModel: detailViewModel, state: .error)
                 }
             )
         }
