@@ -116,4 +116,8 @@ extension Connection {
     var providerPublicKeyTag: String {
         return "\(guid)_provider_public_key"
     }
+
+    var isActive: Bool {
+        return status == ConnectionStatus.active.rawValue
+    }
 }

@@ -1,8 +1,8 @@
 //
-//  ConnectionError.swift
+//  SEErrorResponse
 //  This file is part of the Salt Edge Authenticator distribution
 //  (https://github.com/saltedge/sca-authenticator-ios)
-//  Copyright © 2019 Salt Edge Inc.
+//  Copyright © 2022 Salt Edge Inc.
 //
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -22,15 +22,18 @@
 
 import Foundation
 
-enum SEAPIError: String {
-    case connectionNotFound = "ConnectionNotFound"
-    case connectionAlreadyRevoked = "ConnectionRevoked"
+public struct SEErrorResponse: Decodable {
+    public let errorClass: String
+    public let errorMessage: String
 
-    func isConnectionNotFound(_ error: String) -> Bool {
-        return error == SEAPIError.connectionNotFound.rawValue
+    enum CodingKeys: String, CodingKey {
+        case errorMessage = "error_message"
+        case errorClass = "error_class"
     }
 
-    func isConnectionAlreadyRevoked(_ error: String) -> Bool {
-        return error == SEAPIError.connectionAlreadyRevoked.rawValue
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        errorClass = try container.decode(String.self, forKey: .errorClass)
+        errorMessage = try container.decode(String.self, forKey: .errorMessage)
     }
 }
