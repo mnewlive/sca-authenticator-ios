@@ -151,9 +151,7 @@ struct ConnectionsInteractorV2: BaseConnectionsInteractor {
             onSuccess: { _ in
                 success?()
             },
-            onFailure: { error in
-                print(error)
-            }
+            onFailure: failure
         )
     }
 }

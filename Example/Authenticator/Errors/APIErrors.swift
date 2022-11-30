@@ -29,8 +29,4 @@ enum SEAPIError: String {
     func isConnectionNotFound(_ error: String) -> Bool {
         return error == SEAPIError.connectionNotFound.rawValue
     }
-
-    func isConnectionAlreadyRevoked(_ error: String) -> Bool {
-        return error == SEAPIError.connectionAlreadyRevoked.rawValue
-    }
 }
