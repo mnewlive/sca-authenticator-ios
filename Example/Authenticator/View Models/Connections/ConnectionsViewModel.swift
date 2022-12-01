@@ -224,9 +224,6 @@ extension ConnectionsViewModel {
 
         actionSheet.addAction(UIAlertAction(title: deleteTitle, style: .destructive) { _ in
             self.delegate?.deleteConnection(
-//                completion: {
-//                    self.remove(at: indexPath)
-//                }
                 connectiosStatus: { viewModel.isActive }(), completion: {
                     self.remove(at: indexPath)
                 }
