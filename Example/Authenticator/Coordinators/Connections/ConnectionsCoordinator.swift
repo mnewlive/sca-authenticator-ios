@@ -118,8 +118,8 @@ extension ConnectionsCoordinator: ConnectionsEventsDelegate {
         consentsCoordinator?.start()
     }
     
-    func deleteConnection(connectiosStatus: Bool, completion: @escaping () -> ()) {
-        if (connectiosStatus == true) {
+    func deleteConnection(isActive: Bool, completion: @escaping () -> ()) {
+        if isActive {
             currentViewController.navigationController?.showConfirmationAlert(
                 withTitle: l10n(.deleteConnection),
                 message: l10n(.deleteConnectionDescription),
