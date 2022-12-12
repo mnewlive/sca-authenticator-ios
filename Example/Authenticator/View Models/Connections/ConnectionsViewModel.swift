@@ -325,7 +325,7 @@ extension ConnectionsViewModel {
 // MARK: Refresh data actions
 private extension ConnectionsViewModel {
     func refreshConfigurationOperations() -> [Operation] {
-        connections.map { connection in
+        connections.map { [weak self] connection in
             AsyncBlockOperation(on: .main) { finish in
                 guard let baseUrl = connection.baseUrl,
                       let providerId = connection.providerId else {
@@ -335,7 +335,7 @@ private extension ConnectionsViewModel {
 
                 let url = baseUrl.appendingPathComponent("\(SENetPathBuilder(for: .configurations, version: 2).path)/\(providerId)")
                 
-                self.connectionsInteractor.getProviderConfiguration(
+                self?.connectionsInteractor.getProviderConfiguration(
                     from: url,
                     success: { [weak self] response in
                         let oldLogoUrl = connection.logoUrl

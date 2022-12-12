@@ -70,7 +70,10 @@ struct CacheHelper {
 
         guard isImageCached(for: url) else { return }
 
-        cache.retrieveImage(forKey: url.absoluteString) { result in
+        cache.retrieveImage(
+            forKey: url.absoluteString,
+            options: url.pathExtension == CachedImageType.svg.rawValue ? [.processor(SVGImgProcessor())] : nil
+        ) { result in
             switch result {
             case .success(let value): imageView.image = value.image
             case .failure: imageView.image = placeholderImage
