@@ -53,7 +53,9 @@ public struct SEProviderResponseV2: Decodable {
         let dataContainer = try container.nestedContainer(keyedBy: DataCodingKeys.self, forKey: .data)
         name = try dataContainer.decode(String.self, forKey: .name)
         baseUrl = try dataContainer.decode(URL.self, forKey: .baseUrl)
-        logoUrl = try dataContainer.decodeIfPresent(URL.self, forKey: .logoUrl)
+        if let logoUrl = try? dataContainer.decodeIfPresent(URL.self, forKey: .logoUrl) {
+            self.logoUrl = logoUrl
+        }
         apiVersion = try dataContainer.decode(String.self, forKey: .apiVersion)
         supportEmail = try dataContainer.decode(String.self, forKey: .supportEmail)
         let id = try dataContainer.decode(Int.self, forKey: .providerId)

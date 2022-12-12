@@ -74,7 +74,7 @@ final class ConsentLogoView: UIView {
         descriptionLabel.text = data.description
 
         if let imageUrl = data.imageUrl {
-            CacheHelper.setAnimatedCachedImage(from: imageUrl, for: logoImageView)
+            CacheHelper.setImage(for: imageUrl, imageView: logoImageView)
         }
     }
 

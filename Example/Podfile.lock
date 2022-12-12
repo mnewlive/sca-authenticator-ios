@@ -1,4 +1,7 @@
 PODS:
+  - CocoaLumberjack (3.7.4):
+    - CocoaLumberjack/Core (= 3.7.4)
+  - CocoaLumberjack/Core (3.7.4)
   - CryptoSwift (1.5.1)
   - Firebase/Analytics (9.2.0):
     - Firebase/Core
@@ -96,6 +99,7 @@ PODS:
   - GoogleUtilities/UserDefaults (7.7.0):
     - GoogleUtilities/Logger
   - JOSESwift (2.4.0)
+  - Kingfisher (6.3.1)
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
     - nanopb/encode (= 2.30909.0)
@@ -118,15 +122,15 @@ PODS:
   - SaltedgeAuthenticatorSDKv2 (1.1.0):
     - JOSESwift
     - SaltedgeAuthenticatorCore
-  - SDWebImage (5.10.4):
-    - SDWebImage/Core (= 5.10.4)
-  - SDWebImage/Core (5.10.4)
+  - SVGKit (3.0.0):
+    - CocoaLumberjack (~> 3.0)
   - TinyConstraints (4.0.2)
   - Valet (3.2.8)
 
 DEPENDENCIES:
   - Firebase/Analytics
   - Firebase/Crashlytics
+  - Kingfisher
   - Nimble
   - Quick
   - ReachabilitySwift
@@ -134,12 +138,13 @@ DEPENDENCIES:
   - SaltedgeAuthenticatorCore (from `../SaltedgeAuthenticatorCore`)
   - SaltedgeAuthenticatorSDK (from `../`)
   - SaltedgeAuthenticatorSDKv2 (from `../SaltedgeAuthenticatorSDKv2`)
-  - SDWebImage (= 5.10.4)
+  - SVGKit
   - TinyConstraints
   - Valet (~> 3.2.8)
 
 SPEC REPOS:
   trunk:
+    - CocoaLumberjack
     - CryptoSwift
     - Firebase
     - FirebaseAnalytics
@@ -152,6 +157,7 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - JOSESwift
+    - Kingfisher
     - nanopb
     - Nimble
     - PromisesObjC
@@ -159,7 +165,7 @@ SPEC REPOS:
     - ReachabilitySwift
     - Realm
     - RealmSwift
-    - SDWebImage
+    - SVGKit
     - TinyConstraints
     - Valet
 
@@ -172,6 +178,7 @@ EXTERNAL SOURCES:
     :path: "../SaltedgeAuthenticatorSDKv2"
 
 SPEC CHECKSUMS:
+  CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
   CryptoSwift: c4f2debceb38bf44c80659afe009f71e23e4a082
   Firebase: 4ba896cb8e5105d4b9e247e1c1b6222b548df55a
   FirebaseAnalytics: af5a03a8dff7648c7b8486f6a78b1368e0268dd3
@@ -184,6 +191,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   JOSESwift: 7ff178bb9173ff42c6e990929a9f2fa702a34f69
+  Kingfisher: 016c8b653a35add51dd34a3aba36b580041acc74
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   Nimble: 5316ef81a170ce87baf72dd961f22f89a602ff84
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
@@ -194,10 +202,10 @@ SPEC CHECKSUMS:
   SaltedgeAuthenticatorCore: bf9c91b81449fb7ccd23581ab84e1eeff5020647
   SaltedgeAuthenticatorSDK: 4fd566984678e8d936cae541aee82c89b44422e2
   SaltedgeAuthenticatorSDKv2: f9eb801575c0b90879c3f7cf667a7aabed743eef
-  SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
+  SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   TinyConstraints: 7b7ccc0c485bb3bb47082138ff28bc33cd49897f
   Valet: 16d0537d70db79d9ba953b9060b5da4fb8004e51
 
-PODFILE CHECKSUM: 7f15a08d33a1af46d3f787184ec65b0ed568eed4
+PODFILE CHECKSUM: 6163fee6db76ddca3c755da246f104dd0b7c5992
 
 COCOAPODS: 1.11.3
