@@ -72,7 +72,9 @@ enum ConnectionStatus: String {
         name = try container.decode(String.self, forKey: .name)
         code = try container.decode(String.self, forKey: .code)
         baseUrlString = try container.decode(String.self, forKey: .baseUrlString)
-        logoUrlString = try container.decode(String.self, forKey: .logoUrlString)
+        if let logoUrlString = try? container.decodeIfPresent(String.self, forKey: .logoUrlString) {
+            self.logoUrlString = logoUrlString
+        }
         accessToken = try container.decode(String.self, forKey: .accessToken)
         status = try container.decode(String.self, forKey: .status)
         supportEmail = try container.decode(String.self, forKey: .supportEmail)

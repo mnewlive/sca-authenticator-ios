@@ -20,21 +20,82 @@
 //  under Section 7 of the GNU General Public License see THIRD_PARTY_NOTICES.md
 //
 
-import UIKit
-import SDWebImage
+import Foundation
+import Kingfisher
+import SVGKit
 
 struct CacheHelper {
-    static func setDefaultDiskAge() {
-        SDImageCache.shared.config.maxDiskAge = 3600 * 24 * 7 // NOTE: One week
+    enum CachedImageType: String {
+        case photo
+        case svg
     }
 
-    static func setAnimatedCachedImage(from url: URL, for imageView: UIImageView) {
-        imageView.sd_imageTransition = .fade
-        imageView.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "bankPlaceholderCyan"))
+    static var cache = ImageCache.default
+    private static let placeholderImage = UIImage(named: "bankPlaceholderCyan")
+
+    static func isImageCached(for url: URL) -> Bool {
+        return cache.isCached(forKey: url.absoluteString)
+    }
+
+    static func remove(for url: URL) {
+        cache.removeImage(forKey: url.absoluteString)
+    }
+
+    static func setImage(for url: URL?, imageView: UIImageView) {
+        guard let url = url else {
+            imageView.image = placeholderImage
+            return
+        }
+
+        if isImageCached(for: url) {
+            getImage(for: url, imageView: imageView)
+        } else {
+            cache(for: url, imageView: imageView)
+        }
+    }
+
+    static func cache(
+        for url: URL,
+        imageView: UIImageView
+    ) {
+        imageView.kf.setImage(
+            with: url,
+            placeholder: placeholderImage,
+            options: url.pathExtension == CachedImageType.svg.rawValue ? [.processor(SVGImgProcessor())] : nil
+        )
+    }
+
+    static func getImage(for url: URL, imageView: UIImageView) {
+        imageView.image = placeholderImage
+
+        guard isImageCached(for: url) else { return }
+
+        cache.retrieveImage(forKey: url.absoluteString) { result in
+            switch result {
+            case .success(let value): imageView.image = value.image
+            case .failure: imageView.image = placeholderImage
+            }
+        }
+    }
+
+    static func setDefaultDiskAge() {
+        cache.diskStorage.config.expiration = .seconds(3600 * 24 * 7) // NOTE: One week
     }
 
     static func clearCache() {
-        SDImageCache.shared.clearDisk()
-        SDImageCache.shared.clearMemory()
+        cache.clearCache()
+    }
+}
+
+private struct SVGImgProcessor: ImageProcessor {
+    var identifier: String = "com.authenticator.svgimageprocessor"
+
+    func process(item: ImageProcessItem, options: KingfisherParsedOptionsInfo) -> KFCrossPlatformImage? {
+        switch item {
+        case .image(let image):
+            return image
+        case .data(let data):
+            return SVGKImage(data: data)?.uiImage
+        }
     }
 }

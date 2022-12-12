@@ -78,7 +78,7 @@ final class ConnectionCell: UITableViewCell, Dequeuable {
             descriptionLabel.attributedText = viewModel.description
 
             if let imageUrl = viewModel.logoUrl {
-                CacheHelper.setAnimatedCachedImage(from: imageUrl, for: logoImageView)
+                CacheHelper.setImage(for: imageUrl, imageView: logoImageView)
             }
         }
     }
