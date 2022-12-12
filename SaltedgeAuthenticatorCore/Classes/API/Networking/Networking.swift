@@ -37,8 +37,8 @@ public struct HTTPService<T: Decodable> {
         failure: @escaping SimpleFailureClosure
     ) {
 //         NOTE: Uncomment this to debug request
-//         let urlString = request.url?.absoluteString ?? ""
-//         print("🚀 Running request: \(request.httpMethod ?? "") - \(urlString)")
+         let urlString = request.url?.absoluteString ?? ""
+         print("🚀 Running request: \(request.httpMethod ?? "") - \(urlString)")
 
         let task = URLSessionManager.shared.dataTask(with: request) { data, _, error in
             let decoder = JSONDecoder()
@@ -52,7 +52,7 @@ public struct HTTPService<T: Decodable> {
             }
 
 //            NOTE: Uncomment this to debug response data
-//            print("Response: ", String(data: jsonData, encoding: .utf8))
+            print("Response: ", String(data: jsonData, encoding: .utf8))
 
             do {
                 let model = try decoder.decode(T.self, from: jsonData)

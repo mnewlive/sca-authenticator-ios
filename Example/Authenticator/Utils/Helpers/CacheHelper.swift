@@ -78,6 +78,18 @@ struct CacheHelper {
         }
     }
 
+    static func store(for url: URL) {
+        guard let data = try? Data(contentsOf: url) else { return }
+
+        cache.storeToDisk(data, forKey: url.absoluteString)
+    }
+
+    static func remove(for url: URL?) {
+        guard let logoUrl = url else { return }
+
+        cache.removeImage(forKey: logoUrl.absoluteString)
+    }
+
     static func setDefaultDiskAge() {
         cache.diskStorage.config.expiration = .seconds(3600 * 24 * 7) // NOTE: One week
     }

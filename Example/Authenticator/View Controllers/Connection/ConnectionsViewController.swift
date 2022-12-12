@@ -42,7 +42,7 @@ final class ConnectionsViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         reloadData()
-        viewModel.refreshConsents()
+        viewModel.refresh()
     }
 
     override func viewDidLoad() {
@@ -174,7 +174,7 @@ private extension ConnectionsViewController {
     func showActionSheet(at indexPath: IndexPath) {}
 
     @objc func refresh() {
-        viewModel.refreshConsents(
+        viewModel.refresh(
             completion: {
                 DispatchQueue.main.async {
                     self.refreshControl?.endRefreshing()

@@ -10,6 +10,8 @@
 		0479C5522387F8C300F3FE0A /* AVCaptureHelperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0479C5512387F8C300F3FE0A /* AVCaptureHelperSpec.swift */; };
 		5D5C90DF28DB510000D11FDD /* ContentWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5C90DE28DB510000D11FDD /* ContentWebView.swift */; };
 		5D5C90E028DB510000D11FDD /* ContentWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5C90DE28DB510000D11FDD /* ContentWebView.swift */; };
+		5DD73109294799E700915EAC /* AsyncBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD73108294799E700915EAC /* AsyncBlockOperation.swift */; };
+		5DD7310A294799E700915EAC /* AsyncBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DD73108294799E700915EAC /* AsyncBlockOperation.swift */; };
 		5DF91D13283516B300B80A9B /* SECryptoHelperSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DF91D12283516B300B80A9B /* SECryptoHelperSpec.swift */; };
 		6CF5A0163F3E926E5B271FBE /* Pods_Authenticator_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC7966F04DE3EFEB4C47030C /* Pods_Authenticator_Tests.framework */; };
 		8432878826CE378400F77DD5 /* AuthorizationStatusSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8432878726CE378400F77DD5 /* AuthorizationStatusSpec.swift */; };
@@ -402,6 +404,7 @@
 		5A77B827BD85D2BAD4D1123E /* Pods-Authenticator_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Authenticator_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Authenticator_Tests/Pods-Authenticator_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		5C3EEC2ACBD5A3E62C348862 /* Pods-Authenticator_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Authenticator_Example.release.xcconfig"; path = "Target Support Files/Pods-Authenticator_Example/Pods-Authenticator_Example.release.xcconfig"; sourceTree = "<group>"; };
 		5D5C90DE28DB510000D11FDD /* ContentWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentWebView.swift; sourceTree = "<group>"; };
+		5DD73108294799E700915EAC /* AsyncBlockOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncBlockOperation.swift; sourceTree = "<group>"; };
 		5DF91D12283516B300B80A9B /* SECryptoHelperSpec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECryptoHelperSpec.swift; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* Authenticator_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Authenticator_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACE51AFB9204008FA782 /* Authenticator_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Authenticator_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1191,6 +1194,7 @@
 				9DE9410A246D7595000029A2 /* RealmConnectionsListener.swift */,
 				957BCE5E24A3921B001F456F /* Log.swift */,
 				95C8C0ED25F272CC005E787F /* LocationManager.swift */,
+				5DD73108294799E700915EAC /* AsyncBlockOperation.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -1901,6 +1905,7 @@
 				9DCED8E922CE18280050ED3C /* NotificationsManager.swift in Sources */,
 				9DCED8F722CE18280050ED3C /* ModalView.swift in Sources */,
 				9DCED8E122CE18280050ED3C /* Localizations.swift in Sources */,
+				5DD73109294799E700915EAC /* AsyncBlockOperation.swift in Sources */,
 				9DCED8DF22CE18280050ED3C /* AppSettings.swift in Sources */,
 				9D63AB5A26721063007EE1C8 /* AuthorizationContentDynamicStackView.swift in Sources */,
 				959E30A0247BC78C0067354A /* LanguagePickerViewModel.swift in Sources */,
@@ -2193,6 +2198,7 @@
 				9DE324DE22D39AC500EB162A /* PasscodeView.swift in Sources */,
 				9DE3249722D399E800EB162A /* ViewsExtensions.swift in Sources */,
 				9DE3249522D399E300EB162A /* ViewControllerExtensions.swift in Sources */,
+				5DD7310A294799E700915EAC /* AsyncBlockOperation.swift in Sources */,
 				95D784E82304399B002BF219 /* AddConnectionSupportEmail.swift in Sources */,
 				84726A0826B98538005C792E /* AddConnectionV2Fields.swift in Sources */,
 				959E30B4247BE56C0067354A /* SettingCellModel.swift in Sources */,
