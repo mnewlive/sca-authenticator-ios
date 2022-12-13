@@ -381,9 +381,10 @@ private extension ConnectionsViewModel {
 
         updateImageQueue.async {
             if let newLogoUrl = newLogoUrl,
-               newLogoUrl.absoluteString != oldLogoUrl?.absoluteString,
-               !CacheHelper.isImageCached(for: newLogoUrl) {
-                CacheHelper.remove(for: oldLogoUrl) // Remove old logo from cache
+               newLogoUrl.absoluteString != oldLogoUrl?.absoluteString {
+                if let oldLogoUrl = oldLogoUrl, CacheHelper.isImageCached(for: oldLogoUrl) {
+                    CacheHelper.remove(for: oldLogoUrl)
+                }
                 CacheHelper.store(for: newLogoUrl)
 
                 DispatchQueue.main.async {

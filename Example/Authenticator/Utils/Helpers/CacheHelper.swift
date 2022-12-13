@@ -82,7 +82,7 @@ struct CacheHelper {
     }
 
     static func store(for url: URL) {
-        guard let data = try? Data(contentsOf: url) else { return }
+        guard !isImageCached(for: url), let data = try? Data(contentsOf: url) else { return }
 
         cache.storeToDisk(data, forKey: url.absoluteString)
     }
