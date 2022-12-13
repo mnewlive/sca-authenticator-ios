@@ -338,18 +338,7 @@ private extension ConnectionsViewModel {
                 self?.connectionsInteractor.getProviderConfiguration(
                     from: url,
                     success: { [weak self] response in
-                        let oldLogoUrl = connection.logoUrl
-
-                        self?.updateImageQueue.async {
-                            if let newLogoUrl = response.logoUrl, !CacheHelper.isImageCached(for: newLogoUrl) {
-                                CacheHelper.remove(for: oldLogoUrl) // Remove old logo from cache
-                                CacheHelper.store(for: newLogoUrl)
-
-                                DispatchQueue.main.async {
-                                    ConnectionRepository.updateProviderLogo(connection, url: newLogoUrl)
-                                }
-                            }
-                        }
+                        self?.updateLogoIfNeeded(for: connection, newLogoUrl: response.logoUrl)
                         finish()
                     },
                     failure: { _ in
@@ -384,6 +373,23 @@ private extension ConnectionsViewModel {
                     }
                 }
             )
+        }
+    }
+
+    func updateLogoIfNeeded(for connection: Connection, newLogoUrl: URL?) {
+        let oldLogoUrl = connection.logoUrl
+
+        updateImageQueue.async {
+            if let newLogoUrl = newLogoUrl,
+               newLogoUrl.absoluteString != oldLogoUrl?.absoluteString,
+               !CacheHelper.isImageCached(for: newLogoUrl) {
+                CacheHelper.remove(for: oldLogoUrl) // Remove old logo from cache
+                CacheHelper.store(for: newLogoUrl)
+
+                DispatchQueue.main.async {
+                    ConnectionRepository.updateProviderLogo(connection, url: newLogoUrl)
+                }
+            }
         }
     }
 }
