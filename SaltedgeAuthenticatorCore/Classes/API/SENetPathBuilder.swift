@@ -28,6 +28,7 @@ public struct SENetPathBuilder {
         case authorizations
         case actions
         case consents
+        case configurations
     }
     public var path: String
 

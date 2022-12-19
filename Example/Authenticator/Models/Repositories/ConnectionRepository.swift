@@ -56,6 +56,16 @@ struct ConnectionRepository {
     }
 
     @discardableResult
+    static func updateProviderLogo(_ connection: Connection, url: URL) -> Bool {
+        var result = false
+        try? RealmManager.performRealmWriteTransaction {
+            connection.logoUrlString = url.absoluteString
+            result = true
+        }
+        return result
+    }
+
+    @discardableResult
     static func setInactive(_ connection: Connection) -> Bool {
         var result = false
         try? RealmManager.performRealmWriteTransaction {

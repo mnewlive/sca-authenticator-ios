@@ -25,7 +25,7 @@ import RealmSwift
 import SEAuthenticator
 import SEAuthenticatorCore
 
-protocol ConnectionsEventsDelegate: class {
+protocol ConnectionsEventsDelegate: AnyObject {
     func showEditConnectionAlert(placeholder: String, completion: @escaping (String) -> ())
     func showSupport(email: String)
     func deleteConnection(completion: @escaping () -> ())
@@ -46,6 +46,16 @@ final class ConnectionsViewModel {
 
     private var connectionsNotificationToken: NotificationToken?
     private var connectionsListener: RealmConnectionsListener?
+    private lazy var connectionsInteractor = ConnectionsInteractorV2()
+    private let operationQueue = OperationQueue()
+    private let updateImageQueue = DispatchQueue(
+        label: "ConnectionsViewModel.refreshProviderConfigurationQueue",
+        qos: .default
+    )
+    private let refreshConsentsQueue = DispatchQueue(
+        label: "ConnectionsViewModel.refreshConsentsQueue",
+        qos: .default
+    )
 
     private let reachabilityManager: Connectable
 
@@ -294,30 +304,101 @@ extension ConnectionsViewModel {
         return UISwipeActionsConfiguration(actions: [support])
     }
 
-    func refreshConsents(completion: (() -> ())? = nil) {
-        CollectionsInteractor.consents.refresh(
-            connections: Array(connections),
-            success: { [weak self] encryptedConsents in
-                guard let strongSelf = self else { return }
+    func refresh(completion: (() -> ())? = nil) {
+        let refreshConfigurationOperations = refreshConfigurationOperations()
+        let refreshConsentsOperation = refreshConsentsOperation()
+        let finishOperation = BlockOperation {
+            completion?()
+        }
 
-                DispatchQueue.global(qos: .background).async {
-                    let decryptedConsents = encryptedConsents.compactMap { $0.decryptedConsentData }
+        refreshConfigurationOperations.forEach {
+            refreshConsentsOperation.addDependency($0)
+            finishOperation.addDependency($0)
+        }
+        finishOperation.addDependency(refreshConsentsOperation)
+        operationQueue.addOperations(
+            refreshConfigurationOperations + [refreshConsentsOperation, finishOperation], waitUntilFinished: false
+        )
+    }
+}
 
-                    DispatchQueue.main.async {
-                        strongSelf.updateDataSource(with: decryptedConsents)
-                        completion?()
+// MARK: Refresh data actions
+private extension ConnectionsViewModel {
+    func refreshConfigurationOperations() -> [Operation] {
+        connections.uniqued(by: \.providerId).map { [weak self] connection in
+            AsyncBlockOperation(on: .main) { finish in
+                guard let baseUrl = connection.baseUrl,
+                      let providerId = connection.providerId else {
+                    finish()
+                    return
+                }
+
+                let url = baseUrl.appendingPathComponent("\(SENetPathBuilder(for: .configurations, version: 2).path)/\(providerId)")
+                
+                self?.connectionsInteractor.getProviderConfiguration(
+                    from: url,
+                    success: { [weak self] response in
+                        self?.updateLogoIfNeeded(for: connection, newLogoUrl: response.logoUrl)
+                        finish()
+                    },
+                    failure: { _ in
+                        finish()
+                    }
+                )
+            }
+        }
+    }
+
+    func refreshConsentsOperation() -> Operation {
+        AsyncBlockOperation(on: .main) { finish in
+            CollectionsInteractor.consents.refresh(
+                connections: Array(self.connections),
+                success: { [weak self] encryptedConsents in
+                    self?.refreshConsentsQueue.async {
+                        let decryptedConsents = encryptedConsents.compactMap { $0.decryptedConsentData }
+                        
+                        DispatchQueue.main.async {
+                            self?.updateDataSource(with: decryptedConsents)
+                            finish()
+                        }
+                    }
+                },
+                failure: { _ in
+                    finish()
+                },
+                connectionNotFoundFailure: { connectionId in
+                    if let id = connectionId, let connection = ConnectionsCollector.with(id: id) {
+                        ConnectionRepository.setInactive(connection)
+                        finish()
                     }
                 }
-            },
-            failure: { _ in
-                completion?()
-            },
-            connectionNotFoundFailure: { connectionId in
-                if let id = connectionId, let connection = ConnectionsCollector.with(id: id) {
-                    ConnectionRepository.setInactive(connection)
-                    completion?()
+            )
+        }
+    }
+
+    func updateLogoIfNeeded(for connection: Connection, newLogoUrl: URL?) {
+        let oldLogoUrl = connection.logoUrl
+
+        print("COnnection name: \(connection.name)")
+        updateImageQueue.async {
+            if let newLogoUrl = newLogoUrl,
+               newLogoUrl.absoluteString != oldLogoUrl?.absoluteString {
+                CacheHelper.remove(for: oldLogoUrl)
+                CacheHelper.store(for: newLogoUrl)
+
+                DispatchQueue.main.async {
+                    self.connections.filter { $0.providerId == connection.providerId }.forEach { c in
+                        ConnectionRepository.updateProviderLogo(c, url: newLogoUrl)
+                    }
                 }
             }
-        )
+        }
+    }
+}
+
+private extension Sequence {
+    func uniqued<Type: Hashable>(by keyPath: KeyPath<Element, Type>) -> [Element] {
+        var set = Set<Type>()
+        return filter { set.insert($0[keyPath: keyPath]).inserted }
     }
 }

@@ -86,8 +86,6 @@ private extension AuthorizationHeaderView {
     }
 
     func setImage(from imageUrl: URL?) {
-        guard let url = imageUrl else { return }
-
         CacheHelper.setImage(for: imageUrl, imageView: connectionImageView)
     }
 }
