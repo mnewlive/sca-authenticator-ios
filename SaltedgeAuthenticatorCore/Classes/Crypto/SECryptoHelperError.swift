@@ -52,15 +52,17 @@ public enum SEAesCipherError: Error {
     case couldNotCreateDecodedString(fromData: Data)
     case noKeyProvided
     case noIvProvided
-    case ivByteArrayIsNotValid
-    case keyByteArrayIsNotValid
+    case ivByteArrayIsNotValid(value: String)
+    case keyByteArrayIsNotValid(value: String)
 
     var localizedDescription: String {
         var message = ""
         switch self {
-        case .couldNotCreateData(let string),
-             .couldNotCreateString(let string),
-             .couldNotCreateEncryptedData(let string):
+        case let .couldNotCreateData(string),
+             let .couldNotCreateString(string),
+             let .couldNotCreateEncryptedData(string),
+             let .ivByteArrayIsNotValid(string),
+             let .keyByteArrayIsNotValid(string):
             message = string
         case .couldNotCreateDecodedString(let data):
             message = data.base64EncodedString()

@@ -33,7 +33,7 @@ public extension Dictionary {
 
     var jsonString: String? {
         if let data = try? JSONSerialization.data(withJSONObject: self, options: []),
-            let string = String(data: data, encoding: String.Encoding.utf8) {
+            let string = String(data: data, encoding: .utf8) {
             return string
         }
         return nil

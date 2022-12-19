@@ -53,20 +53,16 @@ public struct SEAuthorizationManagerV2 {
         onSuccess success: SEHTTPResponse<SEConfirmAuthorizationResponseV2>,
         onFailure failure: @escaping FailureBlock
     ) {
-        DispatchQueue.global(qos: .background).async {
-            let parameters = RequestParametersBuilder.confirmAuthorizationParams(
-                encryptedData: encryptedData(requestData: data),
-                exp: Date().addingTimeInterval(5.0 * 60.0).utcSeconds
-            )
+        let parameters = RequestParametersBuilder.confirmAuthorizationParams(
+            encryptedData: encryptedData(requestData: data),
+            exp: Date().addingTimeInterval(5.0 * 60.0).utcSeconds
+        )
 
-            DispatchQueue.main.async {
-                HTTPService<SEConfirmAuthorizationResponseV2>.makeRequest(
-                    SEAuthorizationRouter.confirm(data, parameters),
-                    completion: success,
-                    failure: failure
-                )
-            }
-        }
+        HTTPService<SEConfirmAuthorizationResponseV2>.makeRequest(
+            SEAuthorizationRouter.confirm(data, parameters),
+            completion: success,
+            failure: failure
+        )
     }
 
     public static func denyAuthorization(
@@ -74,20 +70,16 @@ public struct SEAuthorizationManagerV2 {
         onSuccess success: SEHTTPResponse<SEConfirmAuthorizationResponseV2>,
         onFailure failure: @escaping FailureBlock
     ) {
-        DispatchQueue.global(qos: .background).async {
-            let parameters = RequestParametersBuilder.confirmAuthorizationParams(
-                encryptedData: encryptedData(requestData: data),
-                exp: Date().addingTimeInterval(5.0 * 60.0).utcSeconds
-            )
+        let parameters = RequestParametersBuilder.confirmAuthorizationParams(
+            encryptedData: encryptedData(requestData: data),
+            exp: Date().addingTimeInterval(5.0 * 60.0).utcSeconds
+        )
 
-            DispatchQueue.main.async {
-                HTTPService<SEConfirmAuthorizationResponseV2>.makeRequest(
-                    SEAuthorizationRouter.deny(data, parameters),
-                    completion: success,
-                    failure: failure
-                )
-            }
-        }
+        HTTPService<SEConfirmAuthorizationResponseV2>.makeRequest(
+            SEAuthorizationRouter.deny(data, parameters),
+            completion: success,
+            failure: failure
+        )
     }
 
     // Encrypt the confirmation payload with connection's provider public key
