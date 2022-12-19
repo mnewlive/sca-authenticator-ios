@@ -325,7 +325,7 @@ extension ConnectionsViewModel {
 // MARK: Refresh data actions
 private extension ConnectionsViewModel {
     func refreshConfigurationOperations() -> [Operation] {
-        connections.map { [weak self] connection in
+        connections.uniqued(by: \.providerId).map { [weak self] connection in
             AsyncBlockOperation(on: .main) { finish in
                 guard let baseUrl = connection.baseUrl,
                       let providerId = connection.providerId else {
@@ -379,18 +379,26 @@ private extension ConnectionsViewModel {
     func updateLogoIfNeeded(for connection: Connection, newLogoUrl: URL?) {
         let oldLogoUrl = connection.logoUrl
 
+        print("COnnection name: \(connection.name)")
         updateImageQueue.async {
             if let newLogoUrl = newLogoUrl,
                newLogoUrl.absoluteString != oldLogoUrl?.absoluteString {
-                if let oldLogoUrl = oldLogoUrl, CacheHelper.isImageCached(for: oldLogoUrl) {
-                    CacheHelper.remove(for: oldLogoUrl)
-                }
+                CacheHelper.remove(for: oldLogoUrl)
                 CacheHelper.store(for: newLogoUrl)
 
                 DispatchQueue.main.async {
-                    ConnectionRepository.updateProviderLogo(connection, url: newLogoUrl)
+                    self.connections.filter { $0.providerId == connection.providerId }.forEach { c in
+                        ConnectionRepository.updateProviderLogo(c, url: newLogoUrl)
+                    }
                 }
             }
         }
+    }
+}
+
+private extension Sequence {
+    func uniqued<Type: Hashable>(by keyPath: KeyPath<Element, Type>) -> [Element] {
+        var set = Set<Type>()
+        return filter { set.insert($0[keyPath: keyPath]).inserted }
     }
 }

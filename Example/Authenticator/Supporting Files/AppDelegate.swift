@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         UNUserNotificationCenter.current().delegate = self
         ConnectivityManager.shared.observeReachability()
         AppearanceHelper.setup()
-        CacheHelper.setDefaultDiskAge()
+        CacheHelper.setDefaultCacheAge()
         configureFirebase()
         LocationManager.shared.startUpdatingLocation()
         setupAppCoordinator()
