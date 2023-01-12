@@ -41,15 +41,16 @@ final class AuthorizationsDataSource {
 
         let allViewModels = (viewModelsV1 + viewModelsV2).sorted(by: { $0.createdAt < $1.createdAt })
 
-        if allViewModels != self.viewModels {
-            self.viewModels = allViewModels
+        if allViewModels != viewModels {
+            viewModels = allViewModels
             return true
         }
 
+
         let cleared = clearedViewModels()
 
-        if cleared != self.viewModels {
-            self.viewModels = cleared
+        if cleared != viewModels {
+            viewModels = cleared
             return true
         }
         return false
@@ -111,12 +112,14 @@ final class AuthorizationsDataSource {
     }
 
     private func clearedViewModels() -> [AuthorizationDetailViewModel] {
-        return self.viewModels.compactMap { viewModel in
+        return viewModels.compactMap { viewModel in
             if viewModel.state.value != .base,
                 let actionTime = viewModel.actionTime,
                 Date().timeIntervalSince1970 - actionTime.timeIntervalSince1970 >= finalAuthorizationTimeToLive {
                 return nil
             }
+
+            // TODO: Exclude non base view models
             if viewModel.expired,
                 Date().timeIntervalSince1970 - viewModel.authorizationExpiresAt.timeIntervalSince1970
                     >= finalAuthorizationTimeToLive {

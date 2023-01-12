@@ -25,7 +25,7 @@ import SEAuthenticator
 import SEAuthenticatorV2
 import SEAuthenticatorCore
 
-protocol AuthorizationDetailEventsDelegate: class {
+protocol AuthorizationDetailEventsDelegate: AnyObject {
     func confirmPressed(_ authorizationId: String, apiVersion: ApiVersion)
     func denyPressed(_ authorizationId: String, apiVersion: ApiVersion)
     func authorizationExpired()
