@@ -25,11 +25,13 @@ import CoreLocation
 
 protocol LocationManagement {
     var notDeterminedAuthorization: Bool { get }
-    var geolocationSharingIsEnabled: Bool { get }
+    var geolocationSharingIsEnabled: Bool { get set }
     func shouldShowLocationWarning(connection: Connection?) -> Bool
 }
 
 final class LocationManager: NSObject, LocationManagement, CLLocationManagerDelegate {
+    var geolocationSharingIsEnabled: Bool = false
+
     static let shared = LocationManager()
     static var currentLocation: CLLocationCoordinate2D?
     private var locationManager: CLLocationManager = CLLocationManager()
@@ -41,12 +43,6 @@ final class LocationManager: NSObject, LocationManagement, CLLocationManagerDele
 
     var notDeterminedAuthorization: Bool {
         CLLocationManager.locationServicesEnabled() && CLLocationManager.authorizationStatus() == .notDetermined
-    }
-
-    var geolocationSharingIsEnabled: Bool {
-        CLLocationManager.locationServicesEnabled()
-            && [.authorizedAlways, .authorizedWhenInUse]
-            .contains(CLLocationManager.authorizationStatus())
     }
 
     var geolocationSharingIsDenied: Bool {
@@ -79,7 +75,10 @@ final class LocationManager: NSObject, LocationManagement, CLLocationManagerDele
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         NotificationsHelper.post(.locationServicesStatusDidChange)
         if status == .authorizedAlways || status == .authorizedWhenInUse {
+            geolocationSharingIsEnabled = true
             startUpdatingLocation()
+        } else {
+            geolocationSharingIsEnabled = false
         }
     }
 }

@@ -93,8 +93,13 @@ public struct SECryptoHelper {
         let encryptedKey = try publicEncrypt(data: key, keyForTag: tag)
         let encryptedIv = try publicEncrypt(data: iv, keyForTag: tag)
 
-        guard [UInt8](key).allSatisfy({ $0 != 0 }) else { throw SEAesCipherError.keyByteArrayIsNotValid }
-        guard [UInt8](iv).allSatisfy({ $0 != 0 }) else { throw SEAesCipherError.ivByteArrayIsNotValid }
+        guard key.checksum > 0 else {
+            throw SEAesCipherError.keyByteArrayIsNotValid(value: "\([UInt8](key))")
+        }
+
+        guard iv.checksum > 0 else {
+            throw SEAesCipherError.ivByteArrayIsNotValid(value: "\([UInt8](iv))")
+        }
 
         return SEEncryptedData(
             data: try AesCipher.encrypt(message: message, key: key, iv: iv),
@@ -161,7 +166,7 @@ public struct SECryptoHelper {
             throw SECryptoHelperError.errorGeneratingRandomBytes
         }
     }
-    
+
     // MARK: - Private Methods
     private static func privateDecrypt(message: String, privateKey: SecKey) throws -> Data {
         guard let data = Data(base64Encoded: message.replacingOccurrences(of: "\n", with: "")) else {
@@ -477,5 +482,11 @@ extension NSInteger {
 private extension KeyTag {
     var privateTag: KeyTag {
         return self + ".private"
+    }
+}
+
+private extension Data {
+    var checksum: Int {
+        return self.map { Int($0) }.reduce(0, +) & 0xff
     }
 }

@@ -112,9 +112,14 @@ enum CollectionsInteractor {
         func onFailure(error: String, connection: Connection) {
             incrementAndCheckResponseCount()
 
-            if SEAPIError.connectionNotFound.isConnectionNotFound(error) {
+            switch error {
+            case SEAPIError.connectionNotFound.rawValue:
                 connectionNotFoundFailure(connection.id)
-            } else {
+            case SEAPIError.connectionAlreadyRevoked.rawValue:
+                guard connection.isActive else { return }
+
+                ConnectionRepository.setInactive(connection)
+            default:
                 failure?("\(l10n(.somethingWentWrong)) (\(connection.name))")
             }
         }

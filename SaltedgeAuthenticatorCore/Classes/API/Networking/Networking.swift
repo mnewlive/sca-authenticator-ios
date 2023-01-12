@@ -55,8 +55,12 @@ public struct HTTPService<T: Decodable> {
 //            print("Response: ", String(data: jsonData, encoding: .utf8))
 
             do {
-                let model = try decoder.decode(T.self, from: jsonData)
-                DispatchQueue.main.async { completion?(model) }
+                if let errorsData = try? decoder.decode(SEErrorResponse.self, from: jsonData) {
+                    DispatchQueue.main.async { failure(errorsData.errorClass) }
+                } else {
+                    let model = try decoder.decode(T.self, from: jsonData)
+                    DispatchQueue.main.async { completion?(model) }
+                }
             } catch {
                 DispatchQueue.main.async { failure(error.localizedDescription) }
             }

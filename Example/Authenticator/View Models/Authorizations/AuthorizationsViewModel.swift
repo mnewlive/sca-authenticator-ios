@@ -117,15 +117,15 @@ final class AuthorizationsViewModel {
                 apiVersion: detailViewModel.apiVersion,
                 data: data,
                 successV1: {
-                    self.update(viewModel: detailViewModel, state: .confirmed)
+                    detailViewModel.setFinal(status: .confirmed)
                 },
                 successV2: { response in
                     if response.status.isFinal {
-                        self.update(viewModel: detailViewModel, state: .confirmed)
+                        detailViewModel.setFinal(status: .confirmed)
                     }
                 },
                 failure: { _ in
-                    self.update(viewModel: detailViewModel, state: .error)
+                    detailViewModel.setFinal(status: .error)
                 }
             )
         }
@@ -144,23 +144,18 @@ final class AuthorizationsViewModel {
                 apiVersion: detailViewModel.apiVersion,
                 data: data,
                 successV1: {
-                    self.update(viewModel: detailViewModel, state: .denied)
+                    detailViewModel.setFinal(status: .denied)
                 },
                 successV2: { response in
                     if response.status.isFinal {
-                        self.update(viewModel: detailViewModel, state: .denied)
+                        detailViewModel.setFinal(status: .denied)
                     }
                 },
                 failure: { _ in
-                    self.update(viewModel: detailViewModel, state: .error)
+                    detailViewModel.setFinal(status: .error)
                 }
             )
         }
-    }
-
-    private func update(viewModel: AuthorizationDetailViewModel, state: AuthorizationStateView.AuthorizationState) {
-        viewModel.state.value = state
-        viewModel.actionTime = Date()
     }
 
     private func updateDataSource(with authorizations: [SEBaseAuthorizationData]) {

@@ -64,6 +64,10 @@ final class AuthorizationContentView: UIView {
 
     var viewModel: AuthorizationDetailViewModel! {
         didSet {
+            viewModel.state.valueChanged = { value in
+                self.stateView.set(state: value)
+            }
+
             titleLabel.text = viewModel.title
 
             if viewModel.shouldShowLocationWarning {
@@ -87,10 +91,6 @@ final class AuthorizationContentView: UIView {
                 } else {
                     setupContentV2(using: viewModel.descriptionAttributes)
                 }
-            }
-
-            viewModel.state.valueChanged = { value in
-                self.stateView.set(state: value)
             }
         }
     }

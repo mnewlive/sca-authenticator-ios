@@ -80,5 +80,19 @@ class ConnectionSpec: BaseSpec {
                 expect("\(connection.guid)_provider_public_key").to(equal(connection.providerPublicKeyTag))
             }
         }
+
+        describe("isActive") {
+            it("should return true if connection is active") {
+                let connection = Connection()
+                connection.status = ConnectionStatus.active.rawValue
+
+                expect(connection.isActive).to(beTrue())
+
+                let connection = Connection()
+                connection.status = ConnectionStatus.inactive.rawValue
+
+                expect(connection.isActive).to(beFalse())
+            }
+        }
     }
 }
