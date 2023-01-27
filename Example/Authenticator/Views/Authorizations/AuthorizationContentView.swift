@@ -108,17 +108,9 @@ final class AuthorizationContentView: UIView {
     
     private func setupContentV1() {
         guard let description = viewModel?.description else { return }
-
-        if  description.htmlToAttributedString != nil {
-          let data = Data(description.utf8)
-                let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
-                    .documentType: NSAttributedString.DocumentType.html,
-                    .characterEncoding: String.Encoding.utf8.rawValue
-                ]
-                guard let attributedString = try? NSAttributedString(data: data, options: options, documentAttributes: nil) else {
-                    return
-                }
-                setupWebView(content: attributedString.string)
+        
+        if viewModel.description.htmlToAttributedString != nil {
+            setupWebView(content: viewModel.description)
         } else {
             contentStackView.removeArrangedSubview(webView)
             descriptionTextView.text = description
