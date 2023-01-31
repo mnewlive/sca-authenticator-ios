@@ -105,13 +105,15 @@ final class AuthorizationContentView: UIView {
         setupButtons()
         layout()
     }
-
+    
     private func setupContentV1() {
+        guard let description = viewModel?.description else { return }
+        
         if viewModel.description.htmlToAttributedString != nil {
             setupWebView(content: viewModel.description)
         } else {
             contentStackView.removeArrangedSubview(webView)
-            descriptionTextView.text = viewModel.description
+            descriptionTextView.text = description
             contentStackView.addArrangedSubview(descriptionTextView)
         }
     }
