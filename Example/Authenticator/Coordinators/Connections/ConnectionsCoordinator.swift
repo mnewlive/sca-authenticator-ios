@@ -117,15 +117,19 @@ extension ConnectionsCoordinator: ConnectionsEventsDelegate {
         )
         consentsCoordinator?.start()
     }
-
-    func deleteConnection(completion: @escaping () -> ()) {
-        currentViewController.navigationController?.showConfirmationAlert(
-            withTitle: l10n(.deleteConnection),
-            message: l10n(.deleteConnectionDescription),
-            confirmAction: { _ in
-                completion()
-            }
-        )
+    
+    func deleteConnection(isActive: Bool, completion: @escaping () -> ()) {
+        if isActive {
+            currentViewController.navigationController?.showConfirmationAlert(
+                withTitle: l10n(.deleteConnection),
+                message: l10n(.deleteConnectionDescription),
+                confirmAction: { _ in
+                    completion()
+                }
+            )
+        } else {
+            completion()
+        }
     }
 
     func reconnect(by id: String) {

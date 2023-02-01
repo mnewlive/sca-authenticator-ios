@@ -28,7 +28,7 @@ import SEAuthenticatorCore
 protocol ConnectionsEventsDelegate: AnyObject {
     func showEditConnectionAlert(placeholder: String, completion: @escaping (String) -> ())
     func showSupport(email: String)
-    func deleteConnection(completion: @escaping () -> ())
+    func deleteConnection(isActive: Bool, completion: @escaping () -> ())
     func reconnect(by id: String)
     func consentsPressed(connectionId: String, consents: [SEConsentData])
     func updateViews()
@@ -234,6 +234,7 @@ extension ConnectionsViewModel {
 
         actionSheet.addAction(UIAlertAction(title: deleteTitle, style: .destructive) { _ in
             self.delegate?.deleteConnection(
+                isActive: viewModel.isActive,
                 completion: {
                     self.remove(at: indexPath)
                 }
@@ -250,6 +251,7 @@ extension ConnectionsViewModel {
 
         let delete = UIContextualAction(style: .destructive, title: "") { _, _, completionHandler in
             self.delegate?.deleteConnection(
+                isActive: viewModel.isActive,
                 completion: {
                     self.remove(at: indexPath)
                 }
