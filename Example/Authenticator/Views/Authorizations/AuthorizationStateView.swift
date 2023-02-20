@@ -51,7 +51,7 @@ final class AuthorizationStateView: UIView {
             case .confirmed: return l10n(.successfulAuthorization)
             case .timeOut: return l10n(.timeOut)
             case .denied: return l10n(.denied)
-            case .error, .unavailable: return l10n(.somethingWentWrong)
+            case .error, .unavailable: return l10n(.actionUnavailable)
             default: return ""
             }
         }
