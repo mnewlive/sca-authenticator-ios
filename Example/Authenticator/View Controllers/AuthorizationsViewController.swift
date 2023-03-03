@@ -111,6 +111,8 @@ final class AuthorizationsViewController: BaseViewController {
     }
 
     private func checkLocationServicesStatus() {
+        guard !LocationManager.shared.geolocationSharingIsEnabled else { return }
+
         if LocationManager.shared.notDeterminedAuthorization {
             LocationManager.shared.requestLocationAuthorization()
         } else if LocationManager.shared.geolocationSharingIsDenied {

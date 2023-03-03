@@ -201,6 +201,8 @@ extension ConnectionsViewController: ConnectionCellEventsDelegate {
     }
 
     func accessLocationPressed() {
+        guard !LocationManager.shared.geolocationSharingIsEnabled else { return }
+
         if LocationManager.shared.notDeterminedAuthorization {
             LocationManager.shared.requestLocationAuthorization()
         } else {
