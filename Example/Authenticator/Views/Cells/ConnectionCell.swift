@@ -98,12 +98,25 @@ final class ConnectionCell: UITableViewCell, Dequeuable {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        setupContentContainer()
         if #available(iOS 13.0, *) {
             let interaction = UIContextMenuInteraction(delegate: self)
             addInteraction(interaction)
         }
         layout()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        backgroundColor = .backgroundColor
+
+        contentView.layer.shadowOpacity = 0.2
+        contentView.layer.shadowOffset = CGSize(width: 0, height: 6)
+        contentView.layer.shadowRadius = Layout.cardViewTopBottomOffset
+
+        let shadowPath = UIBezierPath(roundedRect: bounds.insetBy(dx: 10, dy: 6), cornerRadius: 10)
+        contentView.layer.shadowPath = shadowPath.cgPath
+        contentView.layer.masksToBounds = false
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -127,18 +140,6 @@ extension ConnectionCell: UIContextMenuInteractionDelegate {
         configurationForMenuAtLocation location: CGPoint
     ) -> UIContextMenuConfiguration? {
         return viewModel.contextMenuConfiguration
-    }
-}
-
-// MARK: - Setup
-private extension ConnectionCell {
-    func setupContentContainer() {
-        backgroundColor = .backgroundColor
-
-        contentView.layer.shadowColor = UIColor(red: 0.374, green: 0.426, blue: 0.488, alpha: 0.3).cgColor
-        contentView.layer.shadowOffset = CGSize(width: 0, height: 6)
-        contentView.layer.shadowOpacity = 0.8
-        contentView.layer.shadowRadius = Layout.cardViewTopBottomOffset
     }
 }
 

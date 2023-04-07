@@ -381,7 +381,6 @@ private extension ConnectionsViewModel {
     func updateLogoIfNeeded(for connection: Connection, newLogoUrl: URL?) {
         let oldLogoUrl = connection.logoUrl
 
-        print("COnnection name: \(connection.name)")
         updateImageQueue.async {
             if let newLogoUrl = newLogoUrl,
                newLogoUrl.absoluteString != oldLogoUrl?.absoluteString {
